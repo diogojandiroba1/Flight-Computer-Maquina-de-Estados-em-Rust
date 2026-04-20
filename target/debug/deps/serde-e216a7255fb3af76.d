@@ -1,0 +1,14 @@
+C:\Users\diogo\Desktop\Codigos\flight-computer\target\debug\deps\serde-e216a7255fb3af76.d: C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\diogo\Desktop\Codigos\flight-computer\target\debug\build\serde-ef375ccfbbdcea1b\out/private.rs
+
+C:\Users\diogo\Desktop\Codigos\flight-computer\target\debug\deps\libserde-e216a7255fb3af76.rlib: C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\diogo\Desktop\Codigos\flight-computer\target\debug\build\serde-ef375ccfbbdcea1b\out/private.rs
+
+C:\Users\diogo\Desktop\Codigos\flight-computer\target\debug\deps\libserde-e216a7255fb3af76.rmeta: C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\diogo\Desktop\Codigos\flight-computer\target\debug\build\serde-ef375ccfbbdcea1b\out/private.rs
+
+C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs:
+C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs:
+C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs:
+C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs:
+C:\Users\diogo\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs:
+C:\Users\diogo\Desktop\Codigos\flight-computer\target\debug\build\serde-ef375ccfbbdcea1b\out/private.rs:
+
+# env-dep:OUT_DIR=C:\\Users\\diogo\\Desktop\\Codigos\\flight-computer\\target\\debug\\build\\serde-ef375ccfbbdcea1b\\out

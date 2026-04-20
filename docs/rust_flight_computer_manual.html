@@ -1,0 +1,1380 @@
+
+<style>
+:root { --accent: #534AB7; --accent-light: #EEEDFE; --accent-mid: #7F77DD; --code-bg: var(--color-background-secondary); }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--font-sans); }
+
+.manual-wrap { display: flex; gap: 0; min-height: 600px; }
+
+.sidebar {
+  width: 220px; min-width: 220px;
+  border-right: 1px solid var(--color-border-tertiary);
+  padding: 16px 0;
+  position: sticky; top: 0; height: 600px; overflow-y: auto;
+}
+.sidebar-title { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .08em; padding: 0 16px 8px; }
+.nav-item {
+  display: block; padding: 7px 16px; font-size: 13px; color: var(--color-text-secondary);
+  cursor: pointer; border-left: 2px solid transparent; transition: all .15s;
+  text-decoration: none; line-height: 1.3;
+}
+.nav-item:hover { color: var(--color-text-primary); background: var(--color-background-secondary); }
+.nav-item.active { color: var(--accent); border-left-color: var(--accent); font-weight: 500; background: var(--accent-light); }
+.nav-sub { padding-left: 28px; font-size: 12px; }
+
+.content { flex: 1; padding: 28px 32px; overflow-y: auto; height: 600px; }
+
+.section { display: none; }
+.section.active { display: block; }
+
+h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 6px; }
+h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin: 28px 0 10px; border-bottom: 1px solid var(--color-border-tertiary); padding-bottom: 8px; }
+h3 { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin: 22px 0 8px; }
+h4 { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: .06em; }
+p { font-size: 15px; line-height: 1.7; color: var(--color-text-secondary); margin: 0 0 12px; }
+.lead { font-size: 16px; color: var(--color-text-primary); border-left: 3px solid var(--accent-mid); padding-left: 14px; margin-bottom: 20px; line-height: 1.6; }
+
+pre {
+  background: var(--code-bg); border: 1px solid var(--color-border-tertiary);
+  border-radius: 8px; padding: 16px; overflow-x: auto; margin: 14px 0;
+  font-family: var(--font-mono); font-size: 13px; line-height: 1.65;
+  color: var(--color-text-primary);
+}
+code { font-family: var(--font-mono); font-size: 13px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; color: var(--color-text-primary); }
+
+.comment { color: #888; font-style: italic; }
+.kw { color: #7F77DD; font-weight: 500; }
+.ty { color: #1D9E75; }
+.str { color: #BA7517; }
+.num { color: #D85A30; }
+.func { color: #185FA5; }
+.mac { color: #993C1D; }
+
+.callout {
+  border-radius: 8px; padding: 14px 16px; margin: 16px 0; font-size: 14px; line-height: 1.6;
+}
+.callout-info { background: var(--color-background-info); border-left: 3px solid var(--color-border-info); color: var(--color-text-info); }
+.callout-warn { background: var(--color-background-warning); border-left: 3px solid var(--color-border-warning); color: var(--color-text-warning); }
+.callout-danger { background: var(--color-background-danger); border-left: 3px solid var(--color-border-danger); color: var(--color-text-danger); }
+.callout-success { background: var(--color-background-success); border-left: 3px solid var(--color-border-success); color: var(--color-text-success); }
+
+.pill {
+  display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 12px; font-weight: 500;
+  margin: 0 4px 4px 0;
+}
+.pill-purple { background: #EEEDFE; color: #3C3489; }
+.pill-teal   { background: #E1F5EE; color: #085041; }
+.pill-coral  { background: #FAECE7; color: #4A1B0C; }
+
+.concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+.concept-card {
+  border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 14px;
+}
+.concept-card strong { display: block; font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.concept-card span { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+
+.comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+.col-bad pre { border-color: #F7C1C1; background: #FCEBEB; }
+.col-good pre { border-color: #C0DD97; background: #EAF3DE; }
+.col-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+.col-bad .col-label { color: #A32D2D; }
+.col-good .col-label { color: #3B6D11; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 14px 0; }
+th { text-align: left; padding: 8px 12px; background: var(--color-background-secondary); font-weight: 500; font-size: 13px; color: var(--color-text-secondary); border-bottom: 1px solid var(--color-border-tertiary); }
+td { padding: 8px 12px; border-bottom: 1px solid var(--color-border-tertiary); color: var(--color-text-secondary); vertical-align: top; line-height: 1.5; }
+td code { font-size: 12px; }
+
+.step-list { counter-reset: step; list-style: none; padding: 0; margin: 12px 0; }
+.step-list li { counter-increment: step; display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+.step-list li::before { content: counter(step); min-width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+.breadcrumb { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 20px; }
+.breadcrumb span { margin: 0 4px; }
+</style>
+
+<div class="manual-wrap">
+  <nav class="sidebar">
+    <div class="sidebar-title">Manual do Projeto</div>
+    <a class="nav-item active" onclick="show('intro')">Introdução</a>
+    <a class="nav-item" onclick="show('ownership')">1. Ownership & Borrow</a>
+    <a class="nav-item nav-sub" onclick="show('ownership')">Pilha, heap, move</a>
+    <a class="nav-item" onclick="show('types')">2. Sistema de Tipos</a>
+    <a class="nav-item nav-sub" onclick="show('types')">Structs, generics</a>
+    <a class="nav-item" onclick="show('typestate')">3. Typestate Pattern</a>
+    <a class="nav-item nav-sub" onclick="show('typestate')">Estados em tempo de compilação</a>
+    <a class="nav-item" onclick="show('enums')">4. Enums com Dados</a>
+    <a class="nav-item nav-sub" onclick="show('enums')">Pattern matching</a>
+    <a class="nav-item" onclick="show('traits')">5. Traits</a>
+    <a class="nav-item nav-sub" onclick="show('traits')">Polimorfismo, generics</a>
+    <a class="nav-item" onclick="show('result')">6. Result & Erros</a>
+    <a class="nav-item nav-sub" onclick="show('result')">thiserror, propagação</a>
+    <a class="nav-item" onclick="show('threads')">7. Threads & Channels</a>
+    <a class="nav-item nav-sub" onclick="show('threads')">mpsc, spawn</a>
+    <a class="nav-item" onclick="show('arc')">8. Arc&lt;Mutex&lt;&gt;&gt;</a>
+    <a class="nav-item nav-sub" onclick="show('arc')">Estado compartilhado</a>
+    <a class="nav-item" onclick="show('deps')">9. Dependências</a>
+    <a class="nav-item nav-sub" onclick="show('deps')">rand, chrono, log</a>
+    <a class="nav-item" onclick="show('arch')">10. Arquitetura Geral</a>
+    <a class="nav-item nav-sub" onclick="show('arch')">Como tudo se conecta</a>
+  </nav>
+
+  <div class="content">
+
+    <!-- INTRO -->
+    <div id="intro" class="section active">
+      <div class="breadcrumb">Flight Computer Manual</div>
+      <h1>Manual Teórico — Flight Computer em Rust</h1>
+      <p class="lead">Este manual cobre cada conceito de Rust que você precisa dominar para construir o projeto, na ordem em que eles constroem uns sobre os outros. Cada seção explica o porquê antes do como.</p>
+
+      <h2>Por que Rust para sistemas críticos?</h2>
+      <p>Rust foi desenhado com uma garantia central: <strong>se o código compila, ele não tem race conditions nem use-after-free</strong>. Isso é verificado pelo compilador em tempo de compilação, sem runtime overhead. Para sistemas aeroespaciais — onde um bug pode significar perda de missão — isso não é conveniência, é requisito.</p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <strong>Zero-cost abstractions</strong>
+          <span>Você escreve código de alto nível. O compilador gera o equivalente ao C otimizado. Sem garbage collector, sem runtime.</span>
+        </div>
+        <div class="concept-card">
+          <strong>Ownership system</strong>
+          <span>A memória é gerenciada pelo compilador via regras de propriedade. Sem malloc/free, sem dangling pointers.</span>
+        </div>
+        <div class="concept-card">
+          <strong>Type system expressivo</strong>
+          <span>Estados inválidos do sistema podem ser literalmente impossíveis de expressar no código. O typestate pattern vai fazer isso.</span>
+        </div>
+        <div class="concept-card">
+          <strong>Fearless concurrency</strong>
+          <span>O compilador garante que não há data races entre threads. Race conditions viram erros de compilação.</span>
+        </div>
+      </div>
+
+      <h2>Mapa de conceitos do projeto</h2>
+      <table>
+        <tr><th>Fase do projeto</th><th>Conceito de Rust</th><th>Onde aparece</th></tr>
+        <tr><td>Modelar estados</td><td>Typestate pattern, generics</td><td><code>Rocket&lt;PreLaunch&gt;</code>, <code>Rocket&lt;Orbit&gt;</code></td></tr>
+        <tr><td>Transições válidas</td><td>Ownership, move semantics</td><td><code>fn ignite(self) -> Rocket&lt;Ignition&gt;</code></td></tr>
+        <tr><td>Eventos e telemetria</td><td>Enums com dados, pattern matching</td><td><code>FlightEvent::SensorReading { ... }</code></td></tr>
+        <tr><td>Subsistemas paralelos</td><td>Threads, <code>mpsc::channel</code></td><td><code>thread::spawn</code>, <code>tx.send()</code></td></tr>
+        <tr><td>Estado compartilhado</td><td><code>Arc&lt;Mutex&lt;&gt;&gt;</code></td><td>Estado global do foguete</td></tr>
+        <tr><td>Sensores genéricos</td><td>Traits, trait objects</td><td><code>trait Sensor</code>, <code>dyn Sensor</code></td></tr>
+        <tr><td>Tratamento de falhas</td><td><code>Result&lt;T,E&gt;</code>, <code>?</code></td><td>Toda operação crítica</td></tr>
+      </table>
+
+      <div class="callout callout-info">
+        Use o menu lateral para navegar. Cada seção é independente, mas elas constroem umas sobre as outras — recomenda-se ler em ordem na primeira vez.
+      </div>
+    </div>
+
+    <!-- OWNERSHIP -->
+    <div id="ownership" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 1</div>
+      <h1>Ownership, Borrowing e Move Semantics</h1>
+      <p class="lead">Ownership é a fundação de tudo em Rust. Sem entender ownership, nenhum outro conceito faz sentido completamente. É o sistema que elimina toda uma classe de bugs sem um garbage collector.</p>
+
+      <h2>A regra fundamental</h2>
+      <p>Em Rust, cada valor tem exatamente um dono (<em>owner</em>). Quando o owner sai de escopo, o valor é destruído. Isso é garantido pelo compilador, não pelo programador.</p>
+
+      <pre><span class="kw">fn</span> <span class="func">main</span>() {
+    <span class="kw">let</span> altitude = <span class="num">12000.0_f64</span>; <span class="comment">// altitude é o dono desse f64</span>
+    
+    <span class="comment">// altitude existe aqui</span>
+    <span class="func">println!</span>(<span class="str">"{}"</span>, altitude);
+    
+} <span class="comment">// altitude sai de escopo → memória liberada automaticamente</span></pre>
+
+      <h2>Move semantics — transferência de propriedade</h2>
+      <p>Quando você atribui um valor a outra variável, a propriedade é <em>movida</em> (moved). A variável original fica inválida — o compilador rejeita qualquer uso posterior dela.</p>
+
+      <pre><span class="kw">let</span> dados = <span class="ty">String</span>::<span class="func">from</span>(<span class="str">"dados de telemetria"</span>);
+<span class="comment">// dados é dono da String</span>
+
+<span class="kw">let</span> novos_dados = dados; <span class="comment">// propriedade MOVIDA para novos_dados</span>
+
+<span class="func">println!</span>(<span class="str">"{}"</span>, dados); <span class="comment">// ❌ ERRO DE COMPILAÇÃO: value moved here
+                          //    dados não existe mais</span></pre>
+
+      <div class="callout callout-warn">
+        Para o Flight Computer, isso é crucial: quando você chama <code>rocket.ignite()</code>, o estado <code>PreLaunch</code> é consumido e nunca mais pode ser usado. O compilador garante isso.
+      </div>
+
+      <h2>Borrowing — empréstimo sem transferência</h2>
+      <p>Você pode <em>emprestar</em> um valor sem transferir a propriedade, usando referências (<code>&</code>). Existem dois tipos de empréstimo:</p>
+
+      <pre><span class="kw">let</span> telemetria = <span class="ty">String</span>::<span class="func">from</span>(<span class="str">"altitude: 12000m"</span>);
+
+<span class="comment">// Empréstimo imutável — múltiplos permitidos ao mesmo tempo</span>
+<span class="kw">let</span> ref1 = &telemetria;
+<span class="kw">let</span> ref2 = &telemetria;
+<span class="func">println!</span>(<span class="str">"{} | {}"</span>, ref1, ref2); <span class="comment">// ✅ OK</span>
+
+<span class="comment">// Empréstimo mutável — apenas UM de cada vez</span>
+<span class="kw">let mut</span> dados = <span class="ty">String</span>::<span class="func">from</span>(<span class="str">"dados"</span>);
+<span class="kw">let</span> r_mut = &<span class="kw">mut</span> dados;
+<span class="comment">// não pode usar dados aqui enquanto r_mut existe</span></pre>
+
+      <h3>A regra do borrow checker</h3>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <strong>Referências imutáveis (&T)</strong>
+          <span>Você pode ter quantas quiser ao mesmo tempo. Nenhuma pode modificar o valor. Útil para leitura.</span>
+        </div>
+        <div class="concept-card">
+          <strong>Referência mutável (&mut T)</strong>
+          <span>Apenas uma por vez. Nenhuma outra referência pode existir enquanto ela está ativa. Garante exclusividade de escrita.</span>
+        </div>
+      </div>
+
+      <h2>Copy vs Move</h2>
+      <p>Tipos primitivos como <code>f64</code>, <code>i32</code>, <code>bool</code> implementam o trait <code>Copy</code> — eles são copiados automaticamente ao invés de movidos. Tipos que alocam memória (como <code>String</code> e <code>Vec</code>) são movidos.</p>
+
+      <pre><span class="kw">let</span> altitude: <span class="ty">f64</span> = <span class="num">12000.0</span>;   <span class="comment">// f64 implementa Copy</span>
+<span class="kw">let</span> copia = altitude;              <span class="comment">// CÓPIA — altitude ainda válida</span>
+<span class="func">println!</span>(<span class="str">"{}"</span>, altitude);          <span class="comment">// ✅ funciona</span>
+
+<span class="kw">let</span> nome = <span class="ty">String</span>::<span class="func">from</span>(<span class="str">"MECO"</span>); <span class="comment">// String não implementa Copy</span>
+<span class="kw">let</span> movido = nome;                 <span class="comment">// MOVE — nome inválido</span>
+<span class="comment">// println!("{}", nome);           // ❌ erro</span></pre>
+
+      <h2>Lifetimes — o que o borrow checker rastreia</h2>
+      <p>Lifetimes são o mecanismo interno que Rust usa para rastrear por quanto tempo uma referência é válida. Na maioria dos casos eles são inferidos. Você os verá explicitamente em structs que guardam referências.</p>
+
+      <pre><span class="comment">// Lifetime explícita: a struct não pode outlive a referência que ela guarda</span>
+<span class="kw">struct</span> <span class="ty">TelemetrySlice</span>&lt;<span class="ty">'a</span>&gt; {
+    dados: &<span class="ty">'a str</span>, <span class="comment">// 'a diz: essa referência deve viver pelo menos tanto quanto a struct</span>
+}
+
+<span class="comment">// No flight computer, prefira possuir os dados (String em vez de &str)
+// para evitar lifetime complexity no início.</span></pre>
+
+      <div class="callout callout-success">
+        Para o Flight Computer: os estados do foguete serão structs simples sem referências, então lifetimes explícitas não serão necessárias no início. O move semantics do typestate pattern é a parte importante aqui.
+      </div>
+    </div>
+
+    <!-- TYPES -->
+    <div id="types" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 2</div>
+      <h1>Sistema de Tipos — Structs e Generics</h1>
+      <p class="lead">O sistema de tipos de Rust é a base do typestate pattern. Entender structs e generics é obrigatório antes de modelar os estados do foguete.</p>
+
+      <h2>Structs — dados agrupados</h2>
+      <p>Uma struct agrupa campos relacionados. Em Rust, structs não têm herança — comportamento vem de traits implementadas sobre elas.</p>
+
+      <pre><span class="comment">// Struct com campos nomeados</span>
+<span class="kw">struct</span> <span class="ty">TelemetryData</span> {
+    altitude:  <span class="ty">f64</span>,    <span class="comment">// altitude em metros</span>
+    velocity:  <span class="ty">f64</span>,    <span class="comment">// velocidade em m/s</span>
+    timestamp: <span class="ty">u64</span>,    <span class="comment">// milissegundos desde ignição</span>
+}
+
+<span class="comment">// Instanciação — todos os campos obrigatórios</span>
+<span class="kw">let</span> dados = <span class="ty">TelemetryData</span> {
+    altitude:  <span class="num">45000.0</span>,
+    velocity:  <span class="num">800.0</span>,
+    timestamp: <span class="num">120_000</span>,
+};
+
+<span class="comment">// Acesso por campo</span>
+<span class="func">println!</span>(<span class="str">"Alt: {}m"</span>, dados.altitude);</pre>
+
+      <h3>Struct sem campos — marcador de estado</h3>
+      <p>Uma zero-size struct existe apenas como tipo — ocupa zero bytes em memória. Isso é exatamente o que usaremos para marcar estados do foguete.</p>
+
+      <pre><span class="comment">// Tipos marcadores — só existem como tipos, sem dados</span>
+<span class="kw">struct</span> <span class="ty">PreLaunch</span>;   <span class="comment">// zero bytes</span>
+<span class="kw">struct</span> <span class="ty">Ignition</span>;    <span class="comment">// zero bytes</span>
+<span class="kw">struct</span> <span class="ty">MaxQ</span>;         <span class="comment">// zero bytes</span>
+<span class="kw">struct</span> <span class="ty">MECO</span>;         <span class="comment">// zero bytes</span>
+<span class="kw">struct</span> <span class="ty">Separation</span>;  <span class="comment">// zero bytes</span>
+<span class="kw">struct</span> <span class="ty">Orbit</span>;        <span class="comment">// zero bytes</span>
+
+<span class="comment">// No binário final, esses tipos não existem como dados.
+// Eles existem apenas no sistema de tipos do compilador.</span></pre>
+
+      <h2>Generics — parâmetros de tipo</h2>
+      <p>Generics permitem que uma struct ou função seja parametrizada por um tipo. O compilador gera código especializado para cada tipo concreto usado — isso é <em>monomorphization</em>, sem overhead de runtime.</p>
+
+      <pre><span class="comment">// &lt;T&gt; é o parâmetro de tipo — pode ser qualquer tipo</span>
+<span class="kw">struct</span> <span class="ty">Rocket</span>&lt;<span class="ty">T</span>&gt; {
+    state:      <span class="ty">T</span>,        <span class="comment">// campo com tipo genérico</span>
+    mass_kg:    <span class="ty">f64</span>,
+    fuel_level: <span class="ty">f64</span>,
+}
+
+<span class="comment">// Rocket&lt;PreLaunch&gt; e Rocket&lt;Orbit&gt; são tipos COMPLETAMENTE DIFERENTES
+// para o compilador — tão diferentes quanto i32 e String</span>
+
+<span class="kw">let</span> foguete: <span class="ty">Rocket</span>&lt;<span class="ty">PreLaunch</span>&gt; = <span class="ty">Rocket</span> {
+    state:      <span class="ty">PreLaunch</span>,
+    mass_kg:    <span class="num">549_000.0</span>,
+    fuel_level: <span class="num">1.0</span>,
+};</pre>
+
+      <h3>impl blocks com generics</h3>
+      <p>Você pode implementar métodos apenas para versões específicas de um tipo genérico. Isso é o mecanismo central do typestate pattern.</p>
+
+      <pre><span class="comment">// Métodos para QUALQUER estado — acessíveis sempre</span>
+<span class="kw">impl</span>&lt;<span class="ty">T</span>&gt; <span class="ty">Rocket</span>&lt;<span class="ty">T</span>&gt; {
+    <span class="kw">pub fn</span> <span class="func">fuel_level</span>(&<span class="kw">self</span>) -> <span class="ty">f64</span> {
+        <span class="kw">self</span>.fuel_level
+    }
+}
+
+<span class="comment">// Métodos APENAS para Rocket&lt;PreLaunch&gt;</span>
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">PreLaunch</span>&gt; {
+    <span class="kw">pub fn</span> <span class="func">new</span>() -> <span class="ty">Self</span> {
+        <span class="ty">Rocket</span> { state: <span class="ty">PreLaunch</span>, mass_kg: <span class="num">549_000.0</span>, fuel_level: <span class="num">1.0</span> }
+    }
+    <span class="comment">// ignite() só existe neste tipo — não em Rocket&lt;Orbit&gt;</span>
+    <span class="kw">pub fn</span> <span class="func">ignite</span>(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Ignition</span>&gt; { <span class="comment">/* ... */</span> }
+}
+
+<span class="comment">// Métodos APENAS para Rocket&lt;MECO&gt;</span>
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">MECO</span>&gt; {
+    <span class="kw">pub fn</span> <span class="func">separate_stage</span>(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Separation</span>&gt; { <span class="comment">/* ... */</span> }
+}</pre>
+
+      <div class="callout callout-warn">
+        Note que <code>ignite(self)</code> recebe <code>self</code> por valor, não por referência. Isso <em>consome</em> o <code>Rocket&lt;PreLaunch&gt;</code>. Depois de chamar <code>ignite()</code>, o foguete pré-lançamento literalmente não existe mais — apenas o foguete em ignição existe.
+      </div>
+
+      <h2>PhantomData — quando o compilador precisa de ajuda</h2>
+      <p>Se o parâmetro genérico não aparece em nenhum campo real da struct, o compilador reclama que o tipo não é usado. <code>PhantomData</code> resolve isso: informa ao compilador que o tipo está "conceitualmente presente" sem ocupar espaço.</p>
+
+      <pre><span class="kw">use</span> <span class="ty">std::marker::PhantomData</span>;
+
+<span class="comment">// Se você quiser separar o estado dos dados do foguete:</span>
+<span class="kw">struct</span> <span class="ty">Rocket</span>&lt;<span class="ty">State</span>&gt; {
+    mass_kg:    <span class="ty">f64</span>,
+    fuel_level: <span class="ty">f64</span>,
+    _state:     <span class="ty">PhantomData</span>&lt;<span class="ty">State</span>&gt;, <span class="comment">// zero bytes, satisfaz o compilador</span>
+}
+
+<span class="comment">// PhantomData&lt;State&gt; não ocupa memória.
+// É uma instrução para o compilador: "este tipo existe aqui conceitualmente".</span></pre>
+    </div>
+
+    <!-- TYPESTATE -->
+    <div id="typestate" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 3</div>
+      <h1>Typestate Pattern</h1>
+      <p class="lead">O typestate pattern é a técnica central do projeto. Ele transforma estados de runtime em estados de compilação, tornando transições inválidas literalmente impossíveis de escrever.</p>
+
+      <h2>O problema que ele resolve</h2>
+      <p>Em linguagens convencionais, validação de estado acontece em runtime:</p>
+
+      <div class="comparison">
+        <div class="col-bad">
+          <div class="col-label">Abordagem comum (runtime check)</div>
+          <pre><span class="comment">// Python/Java — estado como enum em runtime</span>
+<span class="kw">class</span> <span class="ty">Rocket</span>:
+    state = <span class="str">"PreLaunch"</span>
+    
+    <span class="kw">def</span> <span class="func">separate_stage</span>(<span class="kw">self</span>):
+        <span class="comment"># Verificado em RUNTIME</span>
+        <span class="kw">if</span> self.state != <span class="str">"MECO"</span>:
+            raise <span class="ty">Exception</span>(<span class="str">"Estado inválido!"</span>)
+        <span class="comment"># O bug pode existir no código
+        # e só é descoberto ao executar</span></pre>
+        </div>
+        <div class="col-good">
+          <div class="col-label">Typestate em Rust (compile-time)</div>
+          <pre><span class="comment">// Rust — estado no sistema de tipos</span>
+<span class="kw">let</span> rocket = <span class="ty">Rocket</span>::&lt;<span class="ty">PreLaunch</span>&gt;::<span class="func">new</span>();
+
+<span class="comment">// separate_stage() não existe em
+// Rocket&lt;PreLaunch&gt; — não tem como chamar</span>
+rocket.<span class="func">separate_stage</span>();
+<span class="comment">// ❌ ERRO DE COMPILAÇÃO:
+// no method `separate_stage` found
+// for type `Rocket&lt;PreLaunch&gt;`
+// O bug é impossível de escrever.</span></pre>
+        </div>
+      </div>
+
+      <h2>Implementação completa</h2>
+      <p>A seguir a implementação completa dos estados e transições, linha a linha:</p>
+
+      <pre><span class="comment">// ── src/states/mod.rs ──────────────────────────────────────────────</span>
+
+<span class="comment">// Tipos marcadores — zero bytes, apenas existem como tipos</span>
+<span class="kw">pub struct</span> <span class="ty">PreLaunch</span>;
+<span class="kw">pub struct</span> <span class="ty">Ignition</span>;
+<span class="kw">pub struct</span> <span class="ty">MaxQ</span>;
+<span class="kw">pub struct</span> <span class="ty">MECO</span>;
+<span class="kw">pub struct</span> <span class="ty">Separation</span>;
+<span class="kw">pub struct</span> <span class="ty">Orbit</span>;
+<span class="kw">pub struct</span> <span class="ty">Aborted</span>;  <span class="comment">// estado final de falha</span>
+
+<span class="comment">// ── src/rocket.rs ──────────────────────────────────────────────────</span>
+
+<span class="kw">use</span> <span class="ty">std::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::states::*;
+
+<span class="comment">// A struct central — parametrizada pelo estado</span>
+<span class="kw">pub struct</span> <span class="ty">Rocket</span>&lt;<span class="ty">State</span>&gt; {
+    <span class="kw">pub</span> mass_kg:      <span class="ty">f64</span>,
+    <span class="kw">pub</span> fuel_level:   <span class="ty">f64</span>,   <span class="comment">// 0.0 a 1.0</span>
+    <span class="kw">pub</span> altitude_m:   <span class="ty">f64</span>,
+    <span class="kw">pub</span> velocity_ms:  <span class="ty">f64</span>,
+    _state: <span class="ty">PhantomData</span>&lt;<span class="ty">State</span>&gt;,  <span class="comment">// zero bytes</span>
+}
+
+<span class="comment">// Métodos disponíveis em QUALQUER estado</span>
+<span class="kw">impl</span>&lt;<span class="ty">State</span>&gt; <span class="ty">Rocket</span>&lt;<span class="ty">State</span>&gt; {
+    <span class="comment">// Transição interna — usada pelas funções de transição</span>
+    <span class="kw">fn</span> <span class="func">transition</span>&lt;<span class="ty">NewState</span>&gt;(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">NewState</span>&gt; {
+        <span class="ty">Rocket</span> {
+            mass_kg:     <span class="kw">self</span>.mass_kg,
+            fuel_level:  <span class="kw">self</span>.fuel_level,
+            altitude_m:  <span class="kw">self</span>.altitude_m,
+            velocity_ms: <span class="kw">self</span>.velocity_ms,
+            _state:      <span class="ty">PhantomData</span>,
+        }
+    }
+}
+
+<span class="comment">// ── Estado: PreLaunch ──────────────────────────────────────────────</span>
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">PreLaunch</span>&gt; {
+    <span class="kw">pub fn</span> <span class="func">new</span>() -> <span class="ty">Self</span> {
+        <span class="ty">Rocket</span> {
+            mass_kg:     <span class="num">549_054.0</span>,  <span class="comment">// Falcon 9 LOX+RP-1</span>
+            fuel_level:  <span class="num">1.0</span>,
+            altitude_m:  <span class="num">0.0</span>,
+            velocity_ms: <span class="num">0.0</span>,
+            _state:      <span class="ty">PhantomData</span>,
+        }
+    }
+
+    <span class="comment">// ignite(self) — consome o PreLaunch, produz Ignition
+    // self por VALOR = move semântico = PreLaunch é destruído</span>
+    <span class="kw">pub fn</span> <span class="func">ignite</span>(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Ignition</span>&gt; {
+        <span class="kw">log::info!</span>(<span class="str">"Ignição iniciada — T+0"</span>);
+        <span class="kw">self</span>.<span class="func">transition</span>()
+    }
+}
+
+<span class="comment">// ── Estado: MECO ───────────────────────────────────────────────────</span>
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">MECO</span>&gt; {
+    <span class="comment">// separate_stage SÓ EXISTE aqui — não existe em outros estados</span>
+    <span class="kw">pub fn</span> <span class="func">separate_stage</span>(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Separation</span>&gt; {
+        <span class="kw">log::info!</span>(<span class="str">"Separação de estágio"</span>);
+        <span class="kw">self</span>.<span class="func">transition</span>()
+    }
+}</pre>
+
+      <h2>Por que <code>self</code> e não <code>&self</code>?</h2>
+      <p>Este é o detalhe mais importante do typestate pattern. Quando um método recebe <code>self</code> (valor), ele <em>consome</em> a instância. Depois da chamada, o foguete no estado antigo literalmente não existe mais na memória do programa. O compilador rejeita qualquer tentativa de usá-lo.</p>
+
+      <pre><span class="kw">let</span> pre_launch = <span class="ty">Rocket</span>::&lt;<span class="ty">PreLaunch</span>&gt;::<span class="func">new</span>();
+
+<span class="comment">// ignite() consome pre_launch e retorna um NOVO objeto</span>
+<span class="kw">let</span> igniting = pre_launch.<span class="func">ignite</span>();  <span class="comment">// pre_launch foi movido</span>
+
+<span class="comment">// Qualquer uso de pre_launch agora é erro de compilação:</span>
+<span class="comment">// println!("{}", pre_launch.fuel_level);</span>
+<span class="comment">// ❌ error[E0382]: borrow of moved value: `pre_launch`</span>
+
+<span class="comment">// O sistema de tipos garante a progressão linear:
+// PreLaunch → Ignition → MaxQ → MECO → Separation → Orbit</span></pre>
+
+      <h2>Abort — transição de qualquer estado</h2>
+      <p>O abort precisa ser possível a partir de vários estados. O jeito idiomático em Rust é usar um trait:</p>
+
+      <pre><span class="comment">// Trait que qualquer estado abortável deve implementar</span>
+<span class="kw">pub trait</span> <span class="ty">Abortable</span> {
+    <span class="kw">fn</span> <span class="func">abort</span>(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Aborted</span>&gt;;
+}
+
+<span class="comment">// Implementar para os estados que podem abortar</span>
+<span class="kw">impl</span> <span class="ty">Abortable</span> <span class="kw">for</span> <span class="ty">Rocket</span>&lt;<span class="ty">Ignition</span>&gt; {
+    <span class="kw">fn</span> <span class="func">abort</span>(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Aborted</span>&gt; {
+        <span class="kw">log::error!</span>(<span class="str">"ABORT — fase Ignition"</span>);
+        <span class="kw">self</span>.<span class="func">transition</span>()
+    }
+}
+
+<span class="comment">// Mesmo para MaxQ e MECO</span></pre>
+    </div>
+
+    <!-- ENUMS -->
+    <div id="enums" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 4</div>
+      <h1>Enums com Dados e Pattern Matching</h1>
+      <p class="lead">Os enums de Rust são tipos soma — cada variante pode carregar dados completamente diferentes. Eles modelam o mundo real melhor que enums de outras linguagens.</p>
+
+      <h2>Enums simples vs enums com dados</h2>
+
+      <div class="comparison">
+        <div class="col-bad">
+          <div class="col-label">Enum simples (sem dados)</div>
+          <pre><span class="comment">// Apenas discrimina entre casos</span>
+<span class="kw">enum</span> <span class="ty">FlightPhase</span> {
+    PreLaunch,
+    Ignition,
+    Orbit,
+}
+<span class="comment">// Não carrega dados específicos
+// da fase — não muito útil</span></pre>
+        </div>
+        <div class="col-good">
+          <div class="col-label">Enum com dados (rico)</div>
+          <pre><span class="comment">// Cada variante carrega seus dados</span>
+<span class="kw">enum</span> <span class="ty">FlightEvent</span> {
+    SensorReading {
+        altitude:  <span class="ty">f64</span>,
+        velocity:  <span class="ty">f64</span>,
+        timestamp: <span class="ty">u64</span>,
+    },
+    FaultDetected {
+        subsystem: <span class="ty">Subsystem</span>,
+        severity:  <span class="ty">Severity</span>,
+    },
+    StageCompleted {
+        stage:      <span class="ty">FlightStage</span>,
+        elapsed_ms: <span class="ty">u64</span>,
+    },
+}</pre>
+        </div>
+      </div>
+
+      <h2>O enum completo do projeto</h2>
+
+      <pre><span class="comment">// ── src/events.rs ──────────────────────────────────────────────────</span>
+
+<span class="kw">use</span> <span class="kw">crate</span>::subsystems::{<span class="ty">Subsystem</span>, <span class="ty">Severity</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::states::<span class="ty">FlightStage</span>;
+
+<span class="kw">pub enum</span> <span class="ty">FlightEvent</span> {
+    <span class="comment">// Leitura periódica de sensores</span>
+    <span class="ty">SensorReading</span> {
+        altitude:  <span class="ty">f64</span>,
+        velocity:  <span class="ty">f64</span>,
+        timestamp: <span class="ty">u64</span>,
+    },
+
+    <span class="comment">// Falha detectada em subsistema</span>
+    <span class="ty">FaultDetected</span> {
+        subsystem: <span class="ty">Subsystem</span>,
+        severity:  <span class="ty">Severity</span>,
+        message:   <span class="ty">String</span>,
+    },
+
+    <span class="comment">// Fase completada com sucesso</span>
+    <span class="ty">StageCompleted</span> {
+        stage:      <span class="ty">FlightStage</span>,
+        elapsed_ms: <span class="ty">u64</span>,
+    },
+
+    <span class="comment">// Comando de abort recebido</span>
+    <span class="ty">AbortCommand</span> {
+        reason: <span class="ty">String</span>,
+        source: <span class="ty">Subsystem</span>,
+    },
+
+    <span class="comment">// Telemetria de propulsão</span>
+    <span class="ty">ThrustReading</span>(<span class="ty">f64</span>),  <span class="comment">// variante com dado tupla</span>
+}
+
+<span class="comment">// Subsistemas que podem reportar eventos</span>
+<span class="kw">pub enum</span> <span class="ty">Subsystem</span> {
+    <span class="ty">Propulsion</span>,
+    <span class="ty">Navigation</span>,
+    <span class="ty">Telemetry</span>,
+    <span class="ty">PowerSystem</span>,
+}
+
+<span class="kw">pub enum</span> <span class="ty">Severity</span> {
+    <span class="ty">Warning</span>,   <span class="comment">// monitorar</span>
+    <span class="ty">Critical</span>,  <span class="comment">// considerar abort</span>
+    <span class="ty">Fatal</span>,     <span class="comment">// abort imediato</span>
+}</pre>
+
+      <h2>Pattern matching com <code>match</code></h2>
+      <p>O <code>match</code> é a ferramenta para trabalhar com enums. Rust exige que todos os casos sejam cobertos — o compilador rejeita código com casos não tratados.</p>
+
+      <pre><span class="comment">// Processar um evento recebido pelo flight computer</span>
+<span class="kw">fn</span> <span class="func">processar_evento</span>(evento: <span class="ty">FlightEvent</span>) {
+    <span class="kw">match</span> evento {
+        <span class="comment">// Destruturar campos nomeados</span>
+        <span class="ty">FlightEvent</span>::<span class="ty">SensorReading</span> { altitude, velocity, timestamp } => {
+            <span class="func">log::info!</span>(<span class="str">"T+{}: alt={:.0}m vel={:.1}m/s"</span>, timestamp, altitude, velocity);
+            
+            <span class="comment">// Checar condição de MaxQ (pressão dinâmica máxima ~85km)</span>
+            <span class="kw">if</span> altitude > <span class="num">80_000.0</span> && altitude < <span class="num">90_000.0</span> {
+                <span class="func">log::warn!</span>(<span class="str">"Aproximando MaxQ — pressão dinâmica alta"</span>);
+            }
+        }
+
+        <span class="comment">// Falha — usar guard para checar severidade</span>
+        <span class="ty">FlightEvent</span>::<span class="ty">FaultDetected</span> { subsystem, severity: <span class="ty">Severity</span>::<span class="ty">Fatal</span>, message } => {
+            <span class="func">log::error!</span>(<span class="str">"FALHA FATAL em {:?}: {}"</span>, subsystem, message);
+            <span class="comment">// acionar abort</span>
+        }
+
+        <span class="ty">FlightEvent</span>::<span class="ty">FaultDetected</span> { subsystem, severity, message } => {
+            <span class="func">log::warn!</span>(<span class="str">"Falha em {:?} ({:?}): {}"</span>, subsystem, severity, message);
+        }
+
+        <span class="ty">FlightEvent</span>::<span class="ty">StageCompleted</span> { stage, elapsed_ms } => {
+            <span class="func">log::info!</span>(<span class="str">"Fase {:?} concluída em {}ms"</span>, stage, elapsed_ms);
+        }
+
+        <span class="comment">// _ cobre todos os casos não listados explicitamente</span>
+        _ => {}
+    }
+}</pre>
+
+      <h2>if let — match para um caso só</h2>
+      <p>Quando você só se importa com uma variante específica, <code>if let</code> é mais conciso que um <code>match</code> completo.</p>
+
+      <pre><span class="kw">let</span> evento = <span class="ty">FlightEvent</span>::<span class="ty">ThrustReading</span>(<span class="num">7_607_000.0</span>);
+
+<span class="comment">// match para um caso só</span>
+<span class="kw">if let</span> <span class="ty">FlightEvent</span>::<span class="ty">ThrustReading</span>(thrust) = evento {
+    <span class="func">println!</span>(<span class="str">"Empuxo: {:.0}N"</span>, thrust);
+}
+
+<span class="comment">// while let — processar canal até estar vazio</span>
+<span class="kw">while let</span> <span class="ty">Ok</span>(evento) = rx.<span class="func">try_recv</span>() {
+    <span class="func">processar_evento</span>(evento);
+}</pre>
+
+      <h2>Option&lt;T&gt; — ausência segura de valores</h2>
+      <p><code>Option&lt;T&gt;</code> é um enum da biblioteca padrão que representa "pode ter um valor, pode não ter". É o substituto de null em Rust — o compilador força você a tratar ambos os casos.</p>
+
+      <pre><span class="kw">enum</span> <span class="ty">Option</span>&lt;<span class="ty">T</span>&gt; {  <span class="comment">// definição real na stdlib</span>
+    <span class="ty">Some</span>(<span class="ty">T</span>),  <span class="comment">// há um valor do tipo T</span>
+    <span class="ty">None</span>,    <span class="comment">// sem valor</span>
+}
+
+<span class="comment">// Sensores podem retornar leitura inválida</span>
+<span class="kw">fn</span> <span class="func">ler_gps</span>() -> <span class="ty">Option</span>&lt;<span class="ty">f64</span>&gt; {
+    <span class="kw">if</span> <span class="func">sinal_disponivel</span>() {
+        <span class="ty">Some</span>(<span class="num">12000.0</span>)
+    } <span class="kw">else</span> {
+        <span class="ty">None</span>  <span class="comment">// sem sinal — sem null pointer</span>
+    }
+}
+
+<span class="comment">// Tratar o Option com match</span>
+<span class="kw">match</span> <span class="func">ler_gps</span>() {
+    <span class="ty">Some</span>(altitude) => <span class="func">println!</span>(<span class="str">"GPS: {}m"</span>, altitude),
+    <span class="ty">None</span>           => <span class="func">println!</span>(<span class="str">"Sinal GPS perdido — usando INS"</span>),
+}</pre>
+    </div>
+
+    <!-- TRAITS -->
+    <div id="traits" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 5</div>
+      <h1>Traits — Comportamento Abstrato</h1>
+      <p class="lead">Traits definem um conjunto de métodos que um tipo deve implementar. São o mecanismo de polimorfismo em Rust — mais poderoso que herança porque são composáveis.</p>
+
+      <h2>Definindo e implementando um trait</h2>
+
+      <pre><span class="comment">// ── src/sensors.rs ────────────────────────────────────────────────</span>
+
+<span class="comment">// Trait: contrato que qualquer sensor deve cumprir</span>
+<span class="kw">pub trait</span> <span class="ty">Sensor</span> {
+    <span class="comment">// Tipo associado — cada sensor define seu próprio tipo de leitura</span>
+    <span class="kw">type</span> <span class="ty">Reading</span>;
+
+    <span class="comment">// Método obrigatório — todo sensor deve implementar</span>
+    <span class="kw">fn</span> <span class="func">read</span>(&<span class="kw">self</span>) -> <span class="ty">Result</span>&lt;<span class="ty">Self::Reading</span>, <span class="ty">SensorError</span>&gt;;
+
+    <span class="comment">// Método com implementação padrão — pode ser sobrescrito</span>
+    <span class="kw">fn</span> <span class="func">name</span>(&<span class="kw">self</span>) -> &<span class="ty">str</span> {
+        <span class="str">"sensor desconhecido"</span>
+    }
+
+    <span class="comment">// Método padrão que usa read() — composição</span>
+    <span class="kw">fn</span> <span class="func">is_healthy</span>(&<span class="kw">self</span>) -> <span class="ty">bool</span> {
+        <span class="kw">self</span>.<span class="func">read</span>().<span class="func">is_ok</span>()
+    }
+}
+
+<span class="comment">// Altímetro — implementa o trait Sensor</span>
+<span class="kw">pub struct</span> <span class="ty">Altimeter</span> {
+    calibration_offset: <span class="ty">f64</span>,
+}
+
+<span class="kw">impl</span> <span class="ty">Sensor</span> <span class="kw">for</span> <span class="ty">Altimeter</span> {
+    <span class="kw">type</span> <span class="ty">Reading</span> = <span class="ty">f64</span>;  <span class="comment">// altitude em metros</span>
+
+    <span class="kw">fn</span> <span class="func">read</span>(&<span class="kw">self</span>) -> <span class="ty">Result</span>&lt;<span class="ty">f64</span>, <span class="ty">SensorError</span>&gt; {
+        <span class="comment">// Simular leitura com ruído</span>
+        <span class="kw">let</span> base = <span class="num">45000.0_f64</span>;
+        <span class="ty">Ok</span>(base + <span class="kw">self</span>.calibration_offset)
+    }
+
+    <span class="kw">fn</span> <span class="func">name</span>(&<span class="kw">self</span>) -> &<span class="ty">str</span> { <span class="str">"Altímetro barométrico"</span> }
+}
+
+<span class="comment">// GPS — outro tipo, mesma interface</span>
+<span class="kw">pub struct</span> <span class="ty">GPS</span> {
+    signal_strength: <span class="ty">f64</span>,
+}
+
+<span class="kw">impl</span> <span class="ty">Sensor</span> <span class="kw">for</span> <span class="ty">GPS</span> {
+    <span class="kw">type</span> <span class="ty">Reading</span> = (<span class="ty">f64</span>, <span class="ty">f64</span>, <span class="ty">f64</span>);  <span class="comment">// (lat, lon, altitude)</span>
+
+    <span class="kw">fn</span> <span class="func">read</span>(&<span class="kw">self</span>) -> <span class="ty">Result</span>&lt;(<span class="ty">f64</span>, <span class="ty">f64</span>, <span class="ty">f64</span>), <span class="ty">SensorError</span>&gt; {
+        <span class="kw">if</span> <span class="kw">self</span>.signal_strength < <span class="num">0.3</span> {
+            <span class="ty">Err</span>(<span class="ty">SensorError::NoSignal</span>)
+        } <span class="kw">else</span> {
+            <span class="ty">Ok</span>((<span class="num">-23.0</span>, <span class="num">-46.0</span>, <span class="num">45000.0</span>))
+        }
+    }
+}</pre>
+
+      <h2>Trait bounds — generics com restrições</h2>
+      <p>Você pode exigir que um tipo genérico implemente um trait específico. O compilador verifica isso e garante que todos os métodos do trait estão disponíveis.</p>
+
+      <pre><span class="comment">// T deve implementar Sensor — garantido pelo compilador</span>
+<span class="kw">fn</span> <span class="func">coletar_dados</span>&lt;<span class="ty">T: Sensor</span>&gt;(sensor: &<span class="ty">T</span>) -> <span class="ty">String</span> {
+    <span class="kw">match</span> sensor.<span class="func">read</span>() {
+        <span class="ty">Ok</span>(_)  => <span class="func">format!</span>(<span class="str">"{}: OK"</span>, sensor.<span class="func">name</span>()),
+        <span class="ty">Err</span>(e) => <span class="func">format!</span>(<span class="str">"{}: FALHA — {:?}"</span>, sensor.<span class="func">name</span>(), e),
+    }
+}
+
+<span class="comment">// Múltiplos bounds com + (AND lógico)</span>
+<span class="kw">fn</span> <span class="func">sensor_com_log</span>&lt;<span class="ty">T: Sensor + std::fmt::Debug</span>&gt;(sensor: &<span class="ty">T</span>) {
+    <span class="func">println!</span>(<span class="str">"{:?}"</span>, sensor);
+}
+
+<span class="comment">// Sintaxe alternativa com where (mais legível para muitos bounds)</span>
+<span class="kw">fn</span> <span class="func">init_sensor</span>&lt;<span class="ty">T</span>&gt;(sensor: &<span class="ty">T</span>)
+<span class="kw">where</span>
+    <span class="ty">T</span>: <span class="ty">Sensor</span> + <span class="ty">Send</span> + <span class="ty">Sync</span>,  <span class="comment">// Send+Sync para uso em threads</span>
+{ <span class="comment">/* ... */</span> }</pre>
+
+      <h2>Trait objects — polimorfismo dinâmico</h2>
+      <p>Quando você quer uma coleção de sensores de tipos diferentes (altímetro, GPS, acelerômetro), use <code>dyn Trait</code>. Isso usa dynamic dispatch (vtable), diferente dos generics que são monomorphized.</p>
+
+      <pre><span class="comment">// Vec heterogêneo de sensores — tipos diferentes, mesma interface</span>
+<span class="kw">let</span> sensores: <span class="ty">Vec</span>&lt;<span class="ty">Box</span>&lt;<span class="kw">dyn</span> <span class="ty">Sensor</span>&lt;Reading = <span class="ty">f64</span>&gt;&gt;&gt; = <span class="func">vec!</span>[
+    <span class="ty">Box</span>::<span class="func">new</span>(<span class="ty">Altimeter</span> { calibration_offset: <span class="num">0.0</span> }),
+    <span class="ty">Box</span>::<span class="func">new</span>(<span class="ty">Barometer</span> { base_pressure: <span class="num">101325.0</span> }),
+];
+
+<span class="comment">// Iterar — cada sensor pode ser um tipo diferente</span>
+<span class="kw">for</span> sensor <span class="kw">in</span> &sensores {
+    <span class="kw">match</span> sensor.<span class="func">read</span>() {
+        <span class="ty">Ok</span>(v)  => <span class="func">println!</span>(<span class="str">"{}: {:.1}m"</span>, sensor.<span class="func">name</span>(), v),
+        <span class="ty">Err</span>(e) => <span class="func">println!</span>(<span class="str">"{}: erro {:?}"</span>, sensor.<span class="func">name</span>(), e),
+    }
+}
+
+<span class="comment">// Box&lt;dyn Trait&gt; = ponteiro heap para objeto de tamanho desconhecido em compile time
+// O compilador não sabe o tamanho exato → precisa ser boxed</span></pre>
+
+      <h2>Traits automáticos da stdlib</h2>
+      <table>
+        <tr><th>Trait</th><th>O que faz</th><th>Como derivar</th></tr>
+        <tr><td><code>Debug</code></td><td>Impressão de debug com <code>{:?}</code></td><td><code>#[derive(Debug)]</code></td></tr>
+        <tr><td><code>Clone</code></td><td>Clonagem explícita com <code>.clone()</code></td><td><code>#[derive(Clone)]</code></td></tr>
+        <tr><td><code>Copy</code></td><td>Cópia implícita (tipos pequenos)</td><td><code>#[derive(Copy, Clone)]</code></td></tr>
+        <tr><td><code>Send</code></td><td>Pode ser enviado entre threads</td><td>automático na maioria dos casos</td></tr>
+        <tr><td><code>Sync</code></td><td>Referência pode ser compartilhada entre threads</td><td>automático na maioria dos casos</td></tr>
+        <tr><td><code>Display</code></td><td>Impressão com <code>{}</code></td><td>implementar manualmente</td></tr>
+      </table>
+    </div>
+
+    <!-- RESULT -->
+    <div id="result" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 6</div>
+      <h1>Result&lt;T, E&gt; e Tratamento de Erros</h1>
+      <p class="lead">Rust não tem exceptions. Erros são valores — tratados com <code>Result&lt;T, E&gt;</code>. O compilador força o tratamento explícito de cada falha possível. Em sistemas críticos, isso é uma propriedade, não um inconveniente.</p>
+
+      <h2>O tipo Result</h2>
+
+      <pre><span class="comment">// Definição real na stdlib:</span>
+<span class="kw">enum</span> <span class="ty">Result</span>&lt;<span class="ty">T</span>, <span class="ty">E</span>&gt; {
+    <span class="ty">Ok</span>(<span class="ty">T</span>),   <span class="comment">// sucesso — carrega o valor do resultado</span>
+    <span class="ty">Err</span>(<span class="ty">E</span>),  <span class="comment">// falha — carrega o erro</span>
+}
+
+<span class="comment">// No flight computer — toda operação crítica retorna Result</span>
+<span class="kw">fn</span> <span class="func">verificar_preflight</span>() -> <span class="ty">Result</span>&lt;(), <span class="ty">FlightError</span>&gt; {
+    <span class="kw">if</span> <span class="func">nivel_combustivel</span>() < <span class="num">0.95</span> {
+        <span class="kw">return</span> <span class="ty">Err</span>(<span class="ty">FlightError::InsufficientFuel</span>);
+    }
+    <span class="kw">if</span> !<span class="func">sistemas_online</span>() {
+        <span class="kw">return</span> <span class="ty">Err</span>(<span class="ty">FlightError::SystemOffline</span> { 
+            system: <span class="ty">Subsystem::Navigation</span> 
+        });
+    }
+    <span class="ty">Ok</span>(())  <span class="comment">// () = "unit" — sucesso sem valor</span>
+}</pre>
+
+      <h2>Definindo erros com thiserror</h2>
+      <p>A crate <code>thiserror</code> elimina boilerplate ao derivar implementações de <code>std::error::Error</code> automaticamente.</p>
+
+      <pre><span class="comment">// ── src/errors.rs ─────────────────────────────────────────────────</span>
+
+<span class="kw">use</span> <span class="ty">thiserror::Error</span>;
+
+<span class="comment">// #[derive(Error)] implementa std::error::Error automaticamente
+// #[error("...")] define a mensagem de display</span>
+#[<span class="func">derive</span>(<span class="ty">Debug</span>, <span class="ty">Error</span>)]
+<span class="kw">pub enum</span> <span class="ty">FlightError</span> {
+    #[<span class="func">error</span>(<span class="str">"combustível insuficiente para lançamento"</span>)]
+    <span class="ty">InsufficientFuel</span>,
+
+    #[<span class="func">error</span>(<span class="str">"sistema {system:?} offline antes do lançamento"</span>)]
+    <span class="ty">SystemOffline</span> { system: <span class="ty">Subsystem</span> },
+
+    #[<span class="func">error</span>(<span class="str">"falha de sensor: {0}"</span>)]  <span class="comment">// {0} = primeiro campo tuple</span>
+    <span class="ty">SensorFailure</span>(<span class="ty">String</span>),
+
+    #[<span class="func">error</span>(<span class="str">"transição de estado inválida: {from} → {to}"</span>)]
+    <span class="ty">InvalidTransition</span> { from: <span class="ty">String</span>, to: <span class="ty">String</span> },
+
+    <span class="comment">// Wrapping de erros de outras crates com #[from]</span>
+    #[<span class="func">error</span>(<span class="str">"erro de I/O: {0}"</span>)]
+    <span class="ty">Io</span>(#[<span class="func">from</span>] <span class="ty">std::io::Error</span>),
+}
+
+<span class="comment">// Erros de sensor — separados por domínio</span>
+#[<span class="func">derive</span>(<span class="ty">Debug</span>, <span class="ty">Error</span>)]
+<span class="kw">pub enum</span> <span class="ty">SensorError</span> {
+    #[<span class="func">error</span>(<span class="str">"sem sinal"</span>)]          <span class="ty">NoSignal</span>,
+    #[<span class="func">error</span>(<span class="str">"leitura fora do range"</span>)] <span class="ty">OutOfRange</span>,
+    #[<span class="func">error</span>(<span class="str">"sensor não inicializado"</span>)] <span class="ty">NotInitialized</span>,
+}</pre>
+
+      <h2>O operador ? — propagação de erros</h2>
+      <p>O operador <code>?</code> é açúcar sintático: se o Result é <code>Err</code>, retorna o erro imediatamente da função atual. Elimina o boilerplate de checar cada resultado manualmente.</p>
+
+      <pre><span class="comment">// Sem o operador ? — verboso</span>
+<span class="kw">fn</span> <span class="func">preflight_manual</span>() -> <span class="ty">Result</span>&lt;(), <span class="ty">FlightError</span>&gt; {
+    <span class="kw">let</span> fuel = <span class="kw">match</span> <span class="func">verificar_combustivel</span>() {
+        <span class="ty">Ok</span>(f)  => f,
+        <span class="ty">Err</span>(e) => <span class="kw">return</span> <span class="ty">Err</span>(e),
+    };
+    <span class="kw">let</span> nav = <span class="kw">match</span> <span class="func">verificar_navegacao</span>() {
+        <span class="ty">Ok</span>(n)  => n,
+        <span class="ty">Err</span>(e) => <span class="kw">return</span> <span class="ty">Err</span>(e),
+    };
+    <span class="ty">Ok</span>(())
+}
+
+<span class="comment">// Com o operador ? — idiomático</span>
+<span class="kw">fn</span> <span class="func">preflight</span>() -> <span class="ty">Result</span>&lt;(), <span class="ty">FlightError</span>&gt; {
+    <span class="kw">let</span> fuel = <span class="func">verificar_combustivel</span>()?;  <span class="comment">// retorna Err se falhar</span>
+    <span class="kw">let</span> nav  = <span class="func">verificar_navegacao</span>()?;    <span class="comment">// retorna Err se falhar</span>
+    <span class="ty">Ok</span>(())  <span class="comment">// chegou aqui = tudo OK</span>
+}
+
+<span class="comment">// ? também converte erros automaticamente via From trait
+// std::io::Error é convertido para FlightError::Io graças ao #[from]</span>
+<span class="kw">fn</span> <span class="func">salvar_telemetria</span>(dados: &<span class="ty">str</span>) -> <span class="ty">Result</span>&lt;(), <span class="ty">FlightError</span>&gt; {
+    <span class="ty">std::fs::write</span>(<span class="str">"telemetry.log"</span>, dados)?;  <span class="comment">// io::Error → FlightError::Io</span>
+    <span class="ty">Ok</span>(())
+}</pre>
+
+      <h2>Métodos úteis de Result e Option</h2>
+
+      <pre><span class="kw">let</span> r: <span class="ty">Result</span>&lt;<span class="ty">f64</span>, <span class="ty">SensorError</span>&gt; = altimetro.<span class="func">read</span>();
+
+r.<span class="func">unwrap</span>()           <span class="comment">// pânico se Err — usar APENAS em testes</span>
+r.<span class="func">unwrap_or</span>(<span class="num">0.0</span>)     <span class="comment">// valor padrão se Err — seguro</span>
+r.<span class="func">unwrap_or_else</span>(|e| { <span class="func">log::error!</span>(<span class="str">"{}"</span>, e); <span class="num">0.0</span> })
+r.<span class="func">is_ok</span>()            <span class="comment">// bool — tem sucesso?</span>
+r.<span class="func">is_err</span>()           <span class="comment">// bool — tem erro?</span>
+r.<span class="func">map</span>(|v| v * <span class="num">3.28</span>)  <span class="comment">// transforma o Ok sem tocar no Err</span>
+r.<span class="func">map_err</span>(|e| <span class="func">format!</span>(<span class="str">"sensor: {}"</span>, e)) <span class="comment">// transforma o Err</span>
+r.<span class="func">ok</span>()               <span class="comment">// converte Result&lt;T,E&gt; para Option&lt;T&gt;</span></pre>
+    </div>
+
+    <!-- THREADS -->
+    <div id="threads" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 7</div>
+      <h1>Threads e Channels — Concorrência</h1>
+      <p class="lead">Subsistemas reais de voo rodam em paralelo. Rust permite modelar isso com threads que se comunicam por channels, com garantias de segurança verificadas em tempo de compilação.</p>
+
+      <h2>thread::spawn — criar uma thread</h2>
+
+      <pre><span class="kw">use</span> <span class="ty">std::thread</span>;
+<span class="kw">use</span> <span class="ty">std::time::Duration</span>;
+
+<span class="comment">// spawn aceita uma closure que será executada na nova thread</span>
+<span class="kw">let</span> handle = <span class="ty">thread</span>::<span class="func">spawn</span>(|| {
+    <span class="comment">// Este código roda em paralelo com a thread principal</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="num">0</span>..<span class="num">5</span> {
+        <span class="func">println!</span>(<span class="str">"Propulsão: ciclo {}"</span>, i);
+        <span class="ty">thread</span>::<span class="func">sleep</span>(<span class="ty">Duration</span>::<span class="func">from_millis</span>(<span class="num">100</span>));
+    }
+});
+
+<span class="comment">// join() bloqueia até a thread terminar e retorna Result
+// (pode falhar se a thread entrou em pânico)</span>
+handle.<span class="func">join</span>().<span class="func">expect</span>(<span class="str">"thread de propulsão falhou"</span>);</pre>
+
+      <h2>mpsc::channel — comunicação entre threads</h2>
+      <p><code>mpsc</code> = Multiple Producer, Single Consumer. Vários subsistemas (producers) enviam eventos para o flight computer central (consumer).</p>
+
+      <pre><span class="kw">use</span> <span class="ty">std::sync::mpsc</span>;
+<span class="kw">use</span> <span class="ty">std::thread</span>;
+
+<span class="comment">// Criar canal — tx = transmitter, rx = receiver</span>
+<span class="kw">let</span> (tx, rx) = <span class="ty">mpsc</span>::<span class="func">channel</span>::&lt;<span class="ty">FlightEvent</span>&gt;();
+
+<span class="comment">// MÚLTIPLOS producers — clonar o tx para cada subsistema</span>
+<span class="kw">let</span> tx_propulsao   = tx.<span class="func">clone</span>();
+<span class="kw">let</span> tx_navegacao   = tx.<span class="func">clone</span>();
+<span class="kw">let</span> tx_telemetria  = tx.<span class="func">clone</span>();
+
+<span class="comment">// Thread de propulsão — move tx_propulsao para dentro</span>
+<span class="ty">thread</span>::<span class="func">spawn</span>(<span class="kw">move</span> || {
+    <span class="comment">// move keyword: transfere tx_propulsao para a closure</span>
+    <span class="kw">loop</span> {
+        <span class="kw">let</span> empuxo = <span class="func">ler_sensor_empuxo</span>();
+        tx_propulsao.<span class="func">send</span>(<span class="ty">FlightEvent::ThrustReading</span>(empuxo))
+            .<span class="func">expect</span>(<span class="str">"canal fechado"</span>);
+        <span class="ty">thread</span>::<span class="func">sleep</span>(<span class="ty">Duration</span>::<span class="func">from_millis</span>(<span class="num">10</span>));
+    }
+});
+
+<span class="comment">// Thread de navegação</span>
+<span class="ty">thread</span>::<span class="func">spawn</span>(<span class="kw">move</span> || {
+    <span class="kw">loop</span> {
+        <span class="kw">let</span> (alt, vel) = <span class="func">ler_inercial</span>();
+        tx_navegacao.<span class="func">send</span>(<span class="ty">FlightEvent::SensorReading</span> {
+            altitude:  alt,
+            velocity:  vel,
+            timestamp: <span class="func">now_ms</span>(),
+        }).<span class="func">expect</span>(<span class="str">"canal fechado"</span>);
+        <span class="ty">thread</span>::<span class="func">sleep</span>(<span class="ty">Duration</span>::<span class="func">from_millis</span>(<span class="num">50</span>));
+    }
+});
+
+<span class="comment">// ── Thread principal — flight computer ────────────────────────────
+// Loop de processamento de eventos</span>
+<span class="kw">loop</span> {
+    <span class="comment">// recv() bloqueia até chegar um evento</span>
+    <span class="kw">match</span> rx.<span class="func">recv</span>() {
+        <span class="ty">Ok</span>(evento)  => <span class="func">processar_evento</span>(evento),
+        <span class="ty">Err</span>(_)      => {
+            <span class="comment">// Err significa que todos os tx foram dropped
+            // = todos os subsistemas terminaram</span>
+            <span class="func">println!</span>(<span class="str">"Todos os subsistemas encerrados"</span>);
+            <span class="kw">break</span>;
+        }
+    }
+}</pre>
+
+      <h2>recv vs try_recv</h2>
+      <table>
+        <tr><th>Método</th><th>Comportamento</th><th>Quando usar</th></tr>
+        <tr><td><code>recv()</code></td><td>Bloqueia até chegar um valor</td><td>Loop principal do flight computer</td></tr>
+        <tr><td><code>try_recv()</code></td><td>Retorna imediatamente com <code>Err</code> se vazio</td><td>Quando você não pode bloquear</td></tr>
+        <tr><td><code>recv_timeout(dur)</code></td><td>Bloqueia até chegar ou timeout</td><td>Quando há timeout máximo aceitável</td></tr>
+      </table>
+
+      <h2>O que o compilador garante</h2>
+      <div class="callout callout-success">
+        Rust garante em compile time que você não pode enviar um tipo não-<code>Send</code> por um canal para outra thread. Se tentar enviar um <code>Rc&lt;T&gt;</code> (que não é thread-safe) para outra thread, o compilador rejeita com erro. Isso elimina toda uma classe de bugs de concorrência antes de rodar o código.
+      </div>
+
+      <pre><span class="comment">// Rc não implementa Send — o compilador rejeita isso:</span>
+<span class="kw">use</span> <span class="ty">std::rc::Rc</span>;
+<span class="kw">let</span> (tx, _rx) = <span class="ty">mpsc</span>::<span class="func">channel</span>();
+<span class="kw">let</span> rc = <span class="ty">Rc</span>::<span class="func">new</span>(<span class="num">42</span>);
+
+<span class="ty">thread</span>::<span class="func">spawn</span>(<span class="kw">move</span> || {
+    tx.<span class="func">send</span>(rc).<span class="func">unwrap</span>(); <span class="comment">// ❌ ERRO: Rc cannot be sent between threads safely</span>
+                           <span class="comment">// Use Arc ao invés de Rc</span>
+});</pre>
+    </div>
+
+    <!-- ARC MUTEX -->
+    <div id="arc" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 8</div>
+      <h1>Arc&lt;Mutex&lt;T&gt;&gt; — Estado Compartilhado</h1>
+      <p class="lead">Quando múltiplas threads precisam ler e escrever no mesmo dado, usamos <code>Arc&lt;Mutex&lt;T&gt;&gt;</code>. Arc gerencia a vida útil do dado. Mutex garante acesso exclusivo. Juntos, eliminam race conditions.</p>
+
+      <h2>Rc vs Arc — contagem de referência</h2>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <strong>Rc&lt;T&gt;</strong>
+          <span>Reference Counting — para uma única thread. Não é Send. Overhead zero de sincronização.</span>
+        </div>
+        <div class="concept-card">
+          <strong>Arc&lt;T&gt;</strong>
+          <span>Atomic Reference Counting — thread-safe. Implementa Send+Sync. Pequeno overhead de operações atômicas.</span>
+        </div>
+      </div>
+
+      <pre><span class="kw">use</span> <span class="ty">std::sync</span>::{<span class="ty">Arc</span>, <span class="ty">Mutex</span>};
+<span class="kw">use</span> <span class="ty">std::thread</span>;
+
+<span class="comment">// ── Como Arc funciona ──────────────────────────────────────────────
+// Arc = ponteiro compartilhado com contagem de referência atômica
+// Todos os Arc para o mesmo dado compartilham o mesmo valor na heap
+// Quando o último Arc é dropped, o valor é liberado</span>
+
+<span class="kw">let</span> dados = <span class="ty">Arc</span>::<span class="func">new</span>(<span class="num">42</span>);
+<span class="kw">let</span> clone1 = <span class="ty">Arc</span>::<span class="func">clone</span>(&dados); <span class="comment">// incrementa contagem (=2)</span>
+<span class="kw">let</span> clone2 = <span class="ty">Arc</span>::<span class="func">clone</span>(&dados); <span class="comment">// incrementa contagem (=3)</span>
+
+<span class="comment">// clone1 e clone2 podem ir para threads diferentes
+// todos apontam para o mesmo 42 na heap</span>
+drop(clone1); <span class="comment">// contagem = 2</span>
+drop(clone2); <span class="comment">// contagem = 1</span>
+<span class="comment">// dados ainda válido — contagem = 1
+// quando dados sai de escopo: contagem = 0 → liberado</span></pre>
+
+      <h2>Mutex — acesso exclusivo</h2>
+
+      <pre><span class="comment">// Mutex garante que apenas uma thread acessa o dado por vez
+// lock() bloqueia até o Mutex estar disponível</span>
+
+<span class="kw">let</span> mutex = <span class="ty">Mutex</span>::<span class="func">new</span>(<span class="num">0_i32</span>); <span class="comment">// Mutex encapsula o dado</span>
+
+{
+    <span class="comment">// lock() retorna MutexGuard — acesso ao dado interno
+    // O compilador garante que você usa o dado ATRAVÉS do guard</span>
+    <span class="kw">let mut</span> guard = mutex.<span class="func">lock</span>().<span class="func">unwrap</span>();
+    *guard += <span class="num">1</span>;
+    <span class="comment">// guard é dropped aqui → Mutex liberado automaticamente
+    // Não há como "esquecer" de liberar o lock</span>
+}
+
+<span class="comment">// Se outra thread tiver o lock, lock() bloqueia até ela terminar</span></pre>
+
+      <h2>Arc&lt;Mutex&lt;T&gt;&gt; no Flight Computer</h2>
+
+      <pre><span class="comment">// Estado global compartilhado entre subsistemas</span>
+#[<span class="func">derive</span>(<span class="ty">Debug</span>)]
+<span class="kw">pub struct</span> <span class="ty">FlightState</span> {
+    <span class="kw">pub</span> altitude_m:   <span class="ty">f64</span>,
+    <span class="kw">pub</span> velocity_ms:  <span class="ty">f64</span>,
+    <span class="kw">pub</span> fuel_level:   <span class="ty">f64</span>,
+    <span class="kw">pub</span> abort_flag:   <span class="ty">bool</span>,
+}
+
+<span class="comment">// Criar estado compartilhado</span>
+<span class="kw">let</span> state = <span class="ty">Arc</span>::<span class="func">new</span>(<span class="ty">Mutex</span>::<span class="func">new</span>(<span class="ty">FlightState</span> {
+    altitude_m:  <span class="num">0.0</span>,
+    velocity_ms: <span class="num">0.0</span>,
+    fuel_level:  <span class="num">1.0</span>,
+    abort_flag:  <span class="kw">false</span>,
+}));
+
+<span class="comment">// Dar uma cópia do Arc para cada thread</span>
+<span class="kw">let</span> state_nav  = <span class="ty">Arc</span>::<span class="func">clone</span>(&state);
+<span class="kw">let</span> state_prop = <span class="ty">Arc</span>::<span class="func">clone</span>(&state);
+
+<span class="comment">// Thread de navegação — atualiza altitude e velocidade</span>
+<span class="ty">thread</span>::<span class="func">spawn</span>(<span class="kw">move</span> || {
+    <span class="kw">loop</span> {
+        <span class="kw">let</span> (nova_alt, nova_vel) = <span class="func">calcular_inercial</span>();
+        
+        <span class="comment">// Adquirir lock, modificar, liberar automaticamente</span>
+        <span class="kw">let mut</span> s = state_nav.<span class="func">lock</span>().<span class="func">unwrap</span>();
+        s.altitude_m  = nova_alt;
+        s.velocity_ms = nova_vel;
+        <span class="comment">// lock liberado aqui — } fim do escopo do guard</span>
+    }
+});
+
+<span class="comment">// Thread de propulsão — consome combustível</span>
+<span class="ty">thread</span>::<span class="func">spawn</span>(<span class="kw">move</span> || {
+    <span class="kw">loop</span> {
+        <span class="kw">let mut</span> s = state_prop.<span class="func">lock</span>().<span class="func">unwrap</span>();
+        s.fuel_level -= <span class="num">0.001</span>;
+        
+        <span class="comment">// Detectar abort — setar flag para outras threads</span>
+        <span class="kw">if</span> s.fuel_level < <span class="num">0.05</span> {
+            s.abort_flag = <span class="kw">true</span>;
+            <span class="kw">break</span>;
+        }
+    }
+});
+
+<span class="comment">// Thread principal — monitorar abort flag</span>
+<span class="kw">loop</span> {
+    <span class="kw">let</span> s = state.<span class="func">lock</span>().<span class="func">unwrap</span>();
+    <span class="kw">if</span> s.abort_flag {
+        <span class="kw">break</span>; <span class="comment">// acionar sequência de abort</span>
+    }
+    <span class="comment">// lock liberado aqui — não seguramos durante sleep</span>
+    drop(s);
+    <span class="ty">thread</span>::<span class="func">sleep</span>(<span class="ty">Duration</span>::<span class="func">from_millis</span>(<span class="num">100</span>));
+}</pre>
+
+      <div class="callout callout-warn">
+        Nunca mantenha um lock enquanto chama código que pode bloquear (como <code>recv()</code> ou operações de I/O). Isso causa deadlock. O padrão é: adquirir lock → modificar → dropar imediatamente → continuar.
+      </div>
+    </div>
+
+    <!-- DEPS -->
+    <div id="deps" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 9</div>
+      <h1>Dependências — rand, chrono, thiserror, log</h1>
+      <p class="lead">Cada dependência do projeto resolve um problema específico. Aqui está exatamente o que cada uma oferece e como usá-la.</p>
+
+      <h2>Cargo.toml — declaração de dependências</h2>
+
+      <pre><span class="comment"># Cargo.toml</span>
+[package]
+name    = <span class="str">"flight-computer"</span>
+version = <span class="str">"0.1.0"</span>
+edition = <span class="str">"2021"</span>
+
+[dependencies]
+rand       = <span class="str">"0.8"</span>
+chrono     = { version = <span class="str">"0.4"</span>, features = [<span class="str">"serde"</span>] }
+thiserror  = <span class="str">"1.0"</span>
+log        = <span class="str">"0.4"</span>
+env_logger = <span class="str">"0.10"</span>
+
+[dev-dependencies]  <span class="comment"># apenas para testes</span>
+assert_matches = <span class="str">"1.5"</span></pre>
+
+      <h2>rand — leituras simuladas de sensores</h2>
+
+      <pre><span class="kw">use</span> <span class="ty">rand::Rng</span>;  <span class="comment">// importar trait Rng</span>
+
+<span class="kw">fn</span> <span class="func">simular_altimetro</span>(base_altitude: <span class="ty">f64</span>) -> <span class="ty">f64</span> {
+    <span class="kw">let mut</span> rng = <span class="ty">rand</span>::<span class="func">thread_rng</span>(); <span class="comment">// RNG local da thread</span>
+    
+    <span class="comment">// gen_range — valor aleatório em intervalo</span>
+    <span class="kw">let</span> ruido = rng.<span class="func">gen_range</span>(-<span class="num">5.0</span>..<span class="num">5.0</span>);  <span class="comment">// ±5m de ruído</span>
+    base_altitude + ruido
+}
+
+<span class="kw">fn</span> <span class="func">simular_falha</span>() -> <span class="ty">bool</span> {
+    <span class="kw">let mut</span> rng = <span class="ty">rand</span>::<span class="func">thread_rng</span>();
+    rng.<span class="func">gen_bool</span>(<span class="num">0.001</span>)  <span class="comment">// 0.1% de chance de falha</span>
+}
+
+<span class="kw">fn</span> <span class="func">simular_vibracoes</span>() -> <span class="ty">Vec</span>&lt;<span class="ty">f64</span>&gt; {
+    <span class="kw">let mut</span> rng = <span class="ty">rand</span>::<span class="func">thread_rng</span>();
+    <span class="comment">// gen — tipo inferido do contexto</span>
+    (<span class="num">0</span>..<span class="num">100</span>).<span class="func">map</span>(|_| rng.<span class="func">gen</span>::&lt;<span class="ty">f64</span>&gt;() * <span class="num">10.0</span>).<span class="func">collect</span>()
+}</pre>
+
+      <h2>chrono — timestamps de telemetria</h2>
+
+      <pre><span class="kw">use</span> <span class="ty">chrono</span>::{<span class="ty">Utc</span>, <span class="ty">DateTime</span>, <span class="ty">Duration</span>};
+
+<span class="comment">// Timestamp de evento de telemetria</span>
+<span class="kw">fn</span> <span class="func">criar_evento_telemetria</span>(altitude: <span class="ty">f64</span>) -> <span class="ty">TelemetryPacket</span> {
+    <span class="ty">TelemetryPacket</span> {
+        timestamp: <span class="ty">Utc</span>::<span class="func">now</span>(),  <span class="comment">// DateTime&lt;Utc&gt;</span>
+        altitude,
+    }
+}
+
+<span class="comment">// Calcular elapsed time desde ignição</span>
+<span class="kw">let</span> t0: <span class="ty">DateTime</span>&lt;<span class="ty">Utc</span>&gt; = <span class="ty">Utc</span>::<span class="func">now</span>();
+<span class="comment">// ... depois:</span>
+<span class="kw">let</span> elapsed: <span class="ty">Duration</span> = <span class="ty">Utc</span>::<span class="func">now</span>() - t0;
+<span class="kw">let</span> ms = elapsed.<span class="func">num_milliseconds</span>();
+
+<span class="comment">// Formatar para log</span>
+<span class="kw">let</span> timestamp_str = <span class="ty">Utc</span>::<span class="func">now</span>().<span class="func">format</span>(<span class="str">"%Y-%m-%dT%H:%M:%S%.3fZ"</span>).<span class="func">to_string</span>();
+<span class="comment">// → "2024-07-04T15:30:00.123Z"</span></pre>
+
+      <h2>log + env_logger — logging estruturado</h2>
+
+      <pre><span class="comment">// ── src/main.rs ───────────────────────────────────────────────────
+// Inicializar no início do main()</span>
+<span class="kw">fn</span> <span class="func">main</span>() {
+    <span class="comment">// env_logger lê a variável RUST_LOG do ambiente</span>
+    <span class="ty">env_logger</span>::<span class="func">init</span>();
+
+    <span class="kw">log::info!</span>(<span class="str">"Flight Computer iniciado"</span>);
+    <span class="kw">log::warn!</span>(<span class="str">"Verificação pré-voo: pressão baixa"</span>);
+    <span class="kw">log::error!</span>(<span class="str">"Falha crítica: {}"</span>, <span class="str">"sensor IMU offline"</span>);
+    <span class="kw">log::debug!</span>(<span class="str">"altitude={:.2} vel={:.2}"</span>, <span class="num">12000.0</span>, <span class="num">800.0</span>);
+    <span class="kw">log::trace!</span>(<span class="str">"dado raw do sensor: {:?}"</span>, raw_bytes);
+}
+
+<span class="comment">// Para executar com logs visíveis:
+// RUST_LOG=debug cargo run         → debug e acima
+// RUST_LOG=flight_computer=trace   → trace apenas do seu crate
+// RUST_LOG=info,flight_computer=debug → info geral, debug do seu crate</span>
+
+<span class="comment">// Nas threads de subsistemas — usar módulo como contexto</span>
+<span class="kw">mod</span> propulsion {
+    <span class="kw">pub fn</span> <span class="func">run</span>() {
+        <span class="kw">log::info!</span>(target: <span class="str">"propulsion"</span>, <span class="str">"Thread de propulsão iniciada"</span>);
+        <span class="comment">// RUST_LOG=propulsion=debug filtra só este módulo</span>
+    }
+}</pre>
+
+      <h2>thiserror — já vimos no capítulo de Result</h2>
+      <div class="callout callout-info">
+        <code>thiserror</code> foi coberto em detalhe no Capítulo 6. A essência: use <code>#[derive(Error)]</code> no seu enum de erros e <code>#[error("mensagem")]</code> em cada variante.
+      </div>
+    </div>
+
+    <!-- ARCH -->
+    <div id="arch" class="section">
+      <div class="breadcrumb">Manual <span>›</span> Capítulo 10</div>
+      <h1>Arquitetura Geral — Como Tudo se Conecta</h1>
+      <p class="lead">Este capítulo mostra como todos os conceitos se integram em um sistema coerente, seguindo a estrutura de arquivos do projeto.</p>
+
+      <h2>Fluxo de dados do sistema</h2>
+
+      <pre><span class="comment">┌─ Thread: Propulsão ──────┐   ┌─ Thread: Navegação ────────┐
+│ loop {                   │   │ loop {                      │
+│   let empuxo = sensor(); │   │   let (a,v) = imu.read();  │
+│   tx.send(ThrustReading) │   │   tx.send(SensorReading)   │
+│   sleep(10ms)            │   │   sleep(50ms)               │
+│ }                        │   │ }                           │
+└──────────────────────────┘   └─────────────────────────────┘
+           │                              │
+           └───────────┬──────────────────┘
+                       ↓ mpsc::channel&lt;FlightEvent&gt;
+          ┌─ Thread: Flight Computer ─────────────────┐
+          │                                            │
+          │  loop {                                    │
+          │    match rx.recv() {                       │
+          │      SensorReading → atualizar estado      │
+          │      ThrustReading → checar nominal        │
+          │      FaultDetected → avaliar abort         │
+          │    }                                       │
+          │    verificar_transicao_estado()            │
+          │  }                                         │
+          │                                            │
+          │  Arc&lt;Mutex&lt;FlightState&gt;&gt; (estado global) │
+          └────────────────────────────────────────────┘</span></pre>
+
+      <h2>Estrutura de módulos em Rust</h2>
+
+      <pre><span class="comment">// ── src/main.rs ───────────────────────────────────────────────────</span>
+<span class="kw">mod</span> states;      <span class="comment">// declara o módulo states (src/states/mod.rs)</span>
+<span class="kw">mod</span> events;      <span class="comment">// src/events.rs</span>
+<span class="kw">mod</span> errors;      <span class="comment">// src/errors.rs</span>
+<span class="kw">mod</span> sensors;     <span class="comment">// src/sensors.rs</span>
+<span class="kw">mod</span> subsystems;  <span class="comment">// src/subsystems/ (pasta com mod.rs)</span>
+
+<span class="kw">use</span> <span class="ty">std::sync</span>::{<span class="ty">Arc</span>, <span class="ty">Mutex</span>};
+<span class="kw">use</span> <span class="ty">std::sync::mpsc</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::events::<span class="ty">FlightEvent</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::states::<span class="ty">PreLaunch</span>;
+
+<span class="kw">fn</span> <span class="func">main</span>() -> <span class="ty">Result</span>&lt;(), <span class="kw">crate</span>::errors::<span class="ty">FlightError</span>&gt; {
+    <span class="ty">env_logger</span>::<span class="func">init</span>();
+    <span class="kw">log::info!</span>(<span class="str">"=== FLIGHT COMPUTER v0.1 ==="</span>);
+
+    <span class="comment">// Estado compartilhado</span>
+    <span class="kw">let</span> shared_state = <span class="ty">Arc</span>::<span class="func">new</span>(<span class="ty">Mutex</span>::<span class="func">new</span>(
+        <span class="ty">FlightState</span>::<span class="func">default</span>()
+    ));
+
+    <span class="comment">// Canal de eventos</span>
+    <span class="kw">let</span> (tx, rx) = <span class="ty">mpsc</span>::<span class="func">channel</span>::&lt;<span class="ty">FlightEvent</span>&gt;();
+
+    <span class="comment">// Iniciar subsistemas</span>
+    <span class="ty">subsystems::propulsion</span>::<span class="func">start</span>(tx.<span class="func">clone</span>(), <span class="ty">Arc</span>::<span class="func">clone</span>(&shared_state));
+    <span class="ty">subsystems::navigation</span>::<span class="func">start</span>(tx.<span class="func">clone</span>(), <span class="ty">Arc</span>::<span class="func">clone</span>(&shared_state));
+    <span class="ty">subsystems::telemetry</span>::<span class="func">start</span>(tx.<span class="func">clone</span>(), <span class="ty">Arc</span>::<span class="func">clone</span>(&shared_state));
+
+    <span class="comment">// Criar foguete no estado inicial</span>
+    <span class="kw">let</span> rocket = <span class="ty">Rocket</span>::&lt;<span class="ty">PreLaunch</span>&gt;::<span class="func">new</span>();
+    
+    <span class="comment">// Preflight check</span>
+    <span class="func">preflight_check</span>(&rocket)?;  <span class="comment">// ? propaga FlightError se falhar</span>
+
+    <span class="comment">// Sequência de lançamento — cada linha consome o estado anterior</span>
+    <span class="kw">let</span> rocket = rocket.<span class="func">ignite</span>();    <span class="comment">// PreLaunch → Ignition</span>
+    <span class="kw">let</span> rocket = rocket.<span class="func">max_q</span>();     <span class="comment">// Ignition → MaxQ</span>
+    <span class="kw">let</span> rocket = rocket.<span class="func">meco</span>();      <span class="comment">// MaxQ → MECO</span>
+    <span class="kw">let</span> rocket = rocket.<span class="func">separate</span>(); <span class="comment">// MECO → Separation</span>
+    <span class="kw">let</span> _orbit = rocket.<span class="func">achieve_orbit</span>(); <span class="comment">// Separation → Orbit</span>
+
+    <span class="kw">log::info!</span>(<span class="str">"=== ÓRBITA ALCANÇADA ==="</span>);
+    <span class="ty">Ok</span>(())
+}</pre>
+
+      <h2>Padrão de cada subsistema</h2>
+
+      <pre><span class="comment">// ── src/subsystems/propulsion.rs ───────────────────────────────────</span>
+<span class="kw">use</span> <span class="ty">std::sync</span>::{<span class="ty">Arc</span>, <span class="ty">Mutex</span>};
+<span class="kw">use</span> <span class="ty">std::sync::mpsc::Sender</span>;
+<span class="kw">use</span> <span class="ty">std::thread</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::events::<span class="ty">FlightEvent</span>;
+
+<span class="comment">// Função pública para iniciar o subsistema em uma nova thread</span>
+<span class="kw">pub fn</span> <span class="func">start</span>(tx: <span class="ty">Sender</span>&lt;<span class="ty">FlightEvent</span>&gt;, state: <span class="ty">Arc</span>&lt;<span class="ty">Mutex</span>&lt;<span class="ty">FlightState</span>&gt;&gt;) {
+    <span class="ty">thread</span>::<span class="func">Builder</span>::<span class="func">new</span>()
+        .<span class="func">name</span>(<span class="str">"propulsion"</span>.<span class="func">into</span>())  <span class="comment">// nome da thread para debug</span>
+        .<span class="func">spawn</span>(<span class="kw">move</span> || <span class="func">run_loop</span>(tx, state))
+        .<span class="func">expect</span>(<span class="str">"failed to spawn propulsion thread"</span>);
+}
+
+<span class="kw">fn</span> <span class="func">run_loop</span>(tx: <span class="ty">Sender</span>&lt;<span class="ty">FlightEvent</span>&gt;, state: <span class="ty">Arc</span>&lt;<span class="ty">Mutex</span>&lt;<span class="ty">FlightState</span>&gt;&gt;) {
+    <span class="kw">let mut</span> rng = <span class="ty">rand</span>::<span class="func">thread_rng</span>();
+    <span class="kw">let</span> cycle = <span class="ty">std::time::Duration</span>::<span class="func">from_millis</span>(<span class="num">10</span>);
+
+    <span class="kw">loop</span> {
+        <span class="comment">// Verificar abort flag sem manter o lock</span>
+        <span class="kw">let</span> should_abort = state.<span class="func">lock</span>().<span class="func">unwrap</span>().abort_flag;
+        <span class="kw">if</span> should_abort { <span class="kw">break</span>; }
+
+        <span class="comment">// Simular leitura de empuxo</span>
+        <span class="kw">let</span> thrust = <span class="num">7_607_000.0</span> + rng.<span class="func">gen_range</span>(-<span class="num">5000.0</span>..<span class="num">5000.0</span>);
+        
+        <span class="comment">// Enviar evento — se o receiver foi dropped, encerrar</span>
+        <span class="kw">if</span> tx.<span class="func">send</span>(<span class="ty">FlightEvent::ThrustReading</span>(thrust)).<span class="func">is_err</span>() {
+            <span class="kw">break</span>;
+        }
+
+        <span class="ty">thread</span>::<span class="func">sleep</span>(cycle);
+    }
+    <span class="kw">log::info!</span>(target: <span class="str">"propulsion"</span>, <span class="str">"Thread encerrada"</span>);
+}</pre>
+
+      <h2>Ordem de aprendizado recomendada</h2>
+      <ol class="step-list">
+        <li>Ownership e move semantics — é a fundação de tudo</li>
+        <li>Structs e generics — necessários para o typestate</li>
+        <li>Enums e pattern matching — modelar eventos e estados</li>
+        <li>Result e tratamento de erros — antes de escrever qualquer função</li>
+        <li>Traits — para os sensores e o trait Abortable</li>
+        <li>Threads e channels — subsistemas paralelos</li>
+        <li>Arc e Mutex — estado compartilhado entre threads</li>
+        <li>Typestate pattern — integra tudo que foi aprendido</li>
+      </ol>
+
+      <div class="callout callout-success">
+        O compilador é seu melhor aliado. Leia cada erro com atenção — os erros do Rust são famosos por ser explicativos e apontar exatamente o que fazer. Uma mensagem como <code>error[E0502]: cannot borrow as mutable because it is also borrowed as immutable</code> é o borrow checker explicando exatamente por que o código seria inseguro.
+      </div>
+
+      <h2>Checklist antes de cada fase</h2>
+      <table>
+        <tr><th>Fase</th><th>Conceitos dominados</th><th>Sinal de que está pronto</th></tr>
+        <tr><td>Fase 1 — Typestate</td><td>Structs, generics, PhantomData</td><td>Consegue criar <code>Rocket&lt;PreLaunch&gt;</code> e a transição não compila fora de ordem</td></tr>
+        <tr><td>Fase 2 — Transições</td><td>Move semantics, impl blocks específicos</td><td>Chamar <code>separate_stage()</code> em <code>Rocket&lt;PreLaunch&gt;</code> é erro de compilação</td></tr>
+        <tr><td>Fase 3 — Threads</td><td><code>thread::spawn</code>, <code>mpsc</code>, <code>move</code> closures</td><td>Propulsão e navegação enviam eventos para o loop central</td></tr>
+        <tr><td>Fase 4 — Arc/Mutex</td><td><code>Arc::clone</code>, <code>Mutex::lock</code>, drop de guard</td><td>Abort flag setado por uma thread é lido por outra sem data race</td></tr>
+        <tr><td>Fase 5 — Sensores</td><td>Trait definitions, trait bounds, <code>dyn Trait</code></td><td>Qualquer struct que implemente <code>Sensor</code> funciona no sistema</td></tr>
+        <tr><td>Fase 6 — Abort</td><td>Trait <code>Abortable</code>, Result em transições</td><td>Falha fatal de subsistema aciona abort automaticamente</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const items = document.querySelectorAll('.nav-item');
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  items.forEach(i => i.classList.remove('active'));
+  const sec = document.getElementById(id);
+  if (sec) sec.classList.add('active');
+  items.forEach(i => {
+    if (i.getAttribute('onclick') && i.getAttribute('onclick').includes("'"+id+"'")) {
+      i.classList.add('active');
+    }
+  });
+}
+</script>

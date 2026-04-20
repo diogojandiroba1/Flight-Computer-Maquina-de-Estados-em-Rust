@@ -1,0 +1,293 @@
+
+<style>
+*{box-sizing:border-box}
+.stepper{font-family:var(--font-sans);padding:0}
+.phase-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.pnav{padding:5px 12px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--color-border-secondary);color:var(--color-text-secondary);background:var(--color-background-secondary);transition:all .15s}
+.pnav.active{color:#fff;border-color:transparent}
+.pnav.gray{background:#5F5E5A}.pnav.coral{background:#993C1D}.pnav.amber{background:#854F0B}
+.pnav.teal{background:#0F6E56}.pnav.purple{background:#534AB7}.pnav.teal2{background:#0F6E56}.pnav.red{background:#A32D2D}
+.card{border:1px solid var(--color-border-tertiary);border-radius:12px;padding:22px 24px}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px}
+.phase-name{font-size:20px;font-weight:500;color:var(--color-text-primary);margin:0 0 2px}
+.phase-time{font-size:13px;color:var(--color-text-tertiary)}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:6px;font-size:12px;font-weight:500}
+.badge-alt{background:#E1F5EE;color:#085041}.badge-vel{background:#EEEDFE;color:#3C3489}
+.badge-dq{background:#FAEEDA;color:#633806}.badge-warn{background:#FCEBEB;color:#791F1F}
+.badge-ok{background:#EAF3DE;color:#27500A}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:16px}
+@media(max-width:520px){.two-col{grid-template-columns:1fr}}
+.section-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-tertiary);margin-bottom:8px}
+.body-text{font-size:14px;line-height:1.65;color:var(--color-text-secondary);margin:0}
+.rust-block{background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);border-radius:8px;padding:14px;font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--color-text-primary);overflow-x:auto}
+.kw{color:#7F77DD;font-weight:500}.ty{color:#1D9E75}.cm{color:#888;font-style:italic}.str{color:#BA7517}.num{color:#D85A30}
+.transitions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.tr-chip{padding:4px 12px;border-radius:6px;font-size:12px;font-weight:500;background:var(--color-background-secondary);border:1px solid var(--color-border-secondary);color:var(--color-text-secondary)}
+.tr-chip.ok{background:#EAF3DE;color:#27500A;border-color:#C0DD97}
+.tr-chip.bad{background:#FCEBEB;color:#791F1F;border-color:#F7C1C1}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+.nav-btn{padding:7px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);transition:all .15s}
+.nav-btn:hover{background:var(--color-background-primary);color:var(--color-text-primary)}
+.nav-btn:disabled{opacity:0.35;cursor:not-allowed}
+.progress{font-size:12px;color:var(--color-text-tertiary)}
+.divider{height:1px;background:var(--color-border-tertiary);margin:14px 0}
+</style>
+
+<div class="stepper">
+<div class="phase-nav" id="pnav"></div>
+<div id="card" class="card"></div>
+</div>
+
+<script>
+const phases = [
+{
+  id:'pre', label:'PreLaunch', color:'gray', time:'T−∞ até T−0',
+  badges:[{t:'0 km',c:'alt'},{t:'0 m/s',c:'vel'},{t:'q ≈ 0 Pa',c:'dq'},{t:'hold-down',c:'ok'}],
+  physics:`O foguete está na plataforma de lançamento, preso pelos hold-down bolts. Todos os sistemas são verificados em sequência: pressurização dos tanques de propelente (LOX + RP-1 no Falcon 9), checagem do sistema de orientação inercial (IMU), ativação do computador de voo. A fase termina quando o computador autoriza a sequência de ignição — nenhuma força propulsiva foi aplicada ainda. A sequência de hold-down é crítica: os motores precisam atingir 100% do empuxo nominal antes de os pinos liberarem o foguete, para garantir que ele não vai subir parcialmente e cair de volta na plataforma.`,
+  model:`PreLaunch é o único estado criado manualmente (via ::new()). Não recebe dados do voo porque nada aconteceu ainda — apenas parâmetros de configuração da missão.`,
+  rust:`<span class="kw">struct</span> <span class="ty">PreLaunch</span>;
+
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">PreLaunch</span>&gt; {
+    <span class="kw">pub fn</span> new() -> <span class="ty">Self</span> {
+        <span class="ty">Rocket</span> {
+            mass_kg:    <span class="num">549_054.0</span>, <span class="cm">// Falcon 9 full</span>
+            fuel_ratio: <span class="num">1.0</span>,       <span class="cm">// tanques cheios</span>
+            altitude_m: <span class="num">0.0</span>,
+            _state:     <span class="ty">PhantomData</span>,
+        }
+    }
+    <span class="cm">// só existe aqui — executa checklist</span>
+    <span class="kw">pub fn</span> ignite(<span class="kw">self</span>) -> <span class="ty">Result</span>&lt;<span class="ty">Rocket</span>&lt;<span class="ty">Ignition</span>&gt;, <span class="ty">FlightError</span>&gt; {
+        preflight_check(&<span class="kw">self</span>)?;
+        <span class="ty">Ok</span>(<span class="kw">self</span>.transition())
+    }
+}`,
+  transitions:[
+    {t:'→ Ignition (após GO/NO-GO)',ok:true},
+    {t:'Abort (hold-down nunca liberado)',ok:true},
+    {t:'→ MaxQ, MECO... diretamente',ok:false},
+  ]
+},
+{
+  id:'ign', label:'Ignition', color:'coral', time:'T+0 até ~T+10 s',
+  badges:[{t:'0–2 km',c:'alt'},{t:'0–150 m/s',c:'vel'},{t:'q crescendo',c:'dq'},{t:'empuxo máx.',c:'warn'}],
+  physics:`A sequência de ignição é na verdade um processo de ~3 segundos antes do liftoff. No Falcon 9, os 9 motores Merlin acendem em sequência escalonada para evitar picos de vibração. O computador monitora a câmara de combustão de cada motor individualmente — se qualquer leitura sair do nominal, o abort é acionado antes de liberar os hold-down bolts. Após confirmar empuxo nominal em todos os 9 motores, os pinos são liberados. Nos primeiros segundos, o veículo está supersônico relativamente devagar — a prioridade é ganhar altitude vertical para sair da região de carga de vento do solo. O guiamento de rolagem ("roll program") começa poucos segundos após o liftoff para alinhar o plano orbital.`,
+  model:`Ignition carrega dados de ignição: timestamp do T+0, empuxo medido de cada motor, temperatura das câmaras. É o primeiro estado com dados de telemetria real. A transição para MaxQ acontece quando pressão dinâmica começa a crescer rapidamente (~30–40 Pa/s).`,
+  rust:`<span class="kw">struct</span> <span class="ty">Ignition</span> {
+    t0_timestamp: <span class="ty">DateTime</span>&lt;<span class="ty">Utc</span>&gt;,  <span class="cm">// momento exato do liftoff</span>
+    engine_thrust: [<span class="ty">f64</span>; <span class="num">9</span>],       <span class="cm">// empuxo de cada motor (N)</span>
+}
+
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">Ignition</span>&gt; {
+    <span class="kw">pub fn</span> advance_to_maxq(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">MaxQ</span>&gt; {
+        <span class="kw">self</span>.transition()
+    }
+    <span class="cm">// abort ainda é possível aqui</span>
+    <span class="kw">pub fn</span> abort(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Aborted</span>&gt; {
+        log::error!(<span class="str">"ABORT — fase Ignition"</span>);
+        <span class="kw">self</span>.transition()
+    }
+}`,
+  transitions:[
+    {t:'→ MaxQ (ao atingir q crescente)',ok:true},
+    {t:'→ Abort (falha de motor)',ok:true},
+    {t:'→ MECO diretamente',ok:false},
+  ]
+},
+{
+  id:'mxq', label:'MaxQ', color:'amber', time:'~T+60 s',
+  badges:[{t:'12–14 km',c:'alt'},{t:'~500 m/s',c:'vel'},{t:'q ~35 kPa',c:'warn'},{t:'throttle 72%',c:'dq'}],
+  physics:`MaxQ (Maximum Dynamic Pressure) é o momento de maior estresse aerodinâmico no foguete. Pressão dinâmica é definida como q = ½ρv², onde ρ é a densidade do ar e v é a velocidade. O paradoxo: conforme o foguete sobe, o ar fica mais raro (ρ cai), mas a velocidade aumenta muito. O produto dessas forças atinge seu pico em torno de 12–14 km de altitude, onde ρ ainda é significativa mas v já está próxima de Mach 1.5. Nesse ponto, a carga lateral (side load) do vento pode ser crítica — é por isso que o Falcon 9 faz throttle down para ~72% do empuxo durante MaxQ, reduzindo a aceleração e portanto a velocidade nessa altitude específica, diminuindo q. A estrutura do foguete é projetada para suportar esse momento — a seção de carga útil (payload fairing) tem que resistir à compressão dinâmica sem deformar.`,
+  model:`MaxQ exige monitoramento em tempo real de pressão dinâmica, número de Mach, e cargas estruturais. É a fase de maior risco de falha estrutural. O estado guarda o pico de q medido para log da missão.`,
+  rust:`<span class="kw">struct</span> <span class="ty">MaxQ</span> {
+    dynamic_pressure_pa: <span class="ty">f64</span>,  <span class="cm">// q = ½ρv² em Pascals</span>
+    mach_number:         <span class="ty">f64</span>,  <span class="cm">// ~1.5 no pico</span>
+    throttle_pct:        <span class="ty">f64</span>,  <span class="cm">// 0.72 durante MaxQ</span>
+    peak_q_reached:      <span class="ty">bool</span>, <span class="cm">// se já passou do pico</span>
+}
+
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">MaxQ</span>&gt; {
+    <span class="cm">// pós-MaxQ: throttle volta a 100% e vai ao MECO</span>
+    <span class="kw">pub fn</span> advance_to_meco(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">MECO</span>&gt; {
+        <span class="kw">self</span>.transition()
+    }
+    <span class="cm">// abort ainda crítico — estrutura pode ceder</span>
+    <span class="kw">pub fn</span> abort(<span class="kw">self</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Aborted</span>&gt; {
+        <span class="kw">self</span>.transition()
+    }
+}`,
+  transitions:[
+    {t:'→ MECO (após pico de q passar)',ok:true},
+    {t:'→ Abort (falha estrutural / motor)',ok:true},
+    {t:'→ Separation sem MECO',ok:false},
+  ]
+},
+{
+  id:'meco', label:'MECO', color:'teal', time:'~T+150 s',
+  badges:[{t:'~70 km',c:'alt'},{t:'~2.000 m/s',c:'vel'},{t:'q ≈ 0 Pa',c:'ok'},{t:'1° estágio',c:'dq'}],
+  physics:`MECO = Main Engine Cutoff. É o desligamento intencional dos motores do primeiro estágio após a queima completa do propelente. Nesse ponto o foguete está a ~70 km de altitude — acima da maior parte da atmosfera, então não há mais carga aerodinâmica significativa. A velocidade orbital ainda não foi atingida (~7.800 m/s para LEO), então o segundo estágio precisa continuar a aceleração. MECO é um estado brevíssimo: normalmente dura apenas 1–3 segundos antes da separação. O computador confirma que os motores estão desligados (empuxo = 0) antes de armar os pinos de separação — você nunca quer separar estágios com os motores ainda ativos. Após MECO, o primeiro estágio começa sua sequência de retorno (grid fins abrem, RCS é ativado para flip de orientação).`,
+  model:`MECO é um estado de transição brevíssimo mas com dados críticos: confirmação de desligamento dos motores, nível de propelente residual (para calcular massa antes da separação), e velocidade/altitude exatas para o handoff ao segundo estágio.`,
+  rust:`<span class="kw">struct</span> <span class="ty">MECO</span> {
+    cutoff_timestamp: <span class="ty">u64</span>,    <span class="cm">// ms desde T+0</span>
+    residual_fuel_kg: <span class="ty">f64</span>,  <span class="cm">// propelente sobrando</span>
+    stage1_velocity:  <span class="ty">f64</span>,  <span class="cm">// m/s no momento do cutoff</span>
+    engines_confirmed_off: <span class="ty">bool</span>,
+}
+
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">MECO</span>&gt; {
+    <span class="cm">// separate_stage APENAS existe aqui</span>
+    <span class="cm">// em nenhum outro estado isso compila</span>
+    <span class="kw">pub fn</span> separate_stage(<span class="kw">self</span>) -> <span class="ty">Result</span>&lt;<span class="ty">Rocket</span>&lt;<span class="ty">Separation</span>&gt;, <span class="ty">FlightError</span>&gt; {
+        <span class="kw">if</span> !<span class="kw">self</span>.state.engines_confirmed_off {
+            <span class="kw">return</span> <span class="ty">Err</span>(<span class="ty">FlightError::SeparationWithEnginesOn</span>);
+        }
+        <span class="ty">Ok</span>(<span class="kw">self</span>.transition())
+    }
+}`,
+  transitions:[
+    {t:'→ Separation (motores OFF confirmados)',ok:true},
+    {t:'→ Abort (falha de confirmação)',ok:true},
+    {t:'→ Orbit sem Separation',ok:false},
+  ]
+},
+{
+  id:'sep', label:'Separation', color:'purple', time:'T+152 s',
+  badges:[{t:'~80 km',c:'alt'},{t:'~2.100 m/s',c:'vel'},{t:'2° estágio',c:'ok'},{t:'fairing sep',c:'dq'}],
+  physics:`A separação de estágio é uma das operações mais críticas da missão. Ocorre em dois passos quase simultâneos: (1) os pinos de separação explodem (pirotécnicos ou pneumáticos), liberando fisicamente os dois estágios; (2) o segundo estágio liga seu motor Merlin Vacuum (~1 segundo após a separação). O timing é crítico: se o segundo estágio ligar antes da separação completa, os gases do motor podem danificar o primeiro estágio (e viceversa). O primeiro estágio começa sua sequência de reentrada imediatamente. A separação do payload fairing (carenagem de carga útil) geralmente ocorre nessa mesma fase ou logo depois — acima de ~110 km, a atmosfera já é tão rara que a carga útil pode ser exposta sem dano por calor aerodinâmico.`,
+  model:`Separation é o estado onde o "foguete" da nossa simulação é na verdade apenas o segundo estágio. Os dados mudam: nova massa (sem o primeiro estágio), novo perfil de empuxo (Merlin Vacuum é otimizado para vácuo), e a missão primária agora é a queima de circularização para atingir a órbita nominal.`,
+  rust:`<span class="kw">struct</span> <span class="ty">Separation</span> {
+    stage2_mass_kg:    <span class="ty">f64</span>,  <span class="cm">// apenas 2° estágio + payload</span>
+    fairing_separated: <span class="ty">bool</span>,
+    stage2_ignition_confirmed: <span class="ty">bool</span>,
+}
+
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">Separation</span>&gt; {
+    <span class="kw">pub fn</span> achieve_orbit(<span class="kw">self</span>) -> <span class="ty">Result</span>&lt;<span class="ty">Rocket</span>&lt;<span class="ty">Orbit</span>&gt;, <span class="ty">FlightError</span>&gt; {
+        <span class="kw">if</span> !<span class="kw">self</span>.state.stage2_ignition_confirmed {
+            <span class="kw">return</span> <span class="ty">Err</span>(<span class="ty">FlightError::Stage2FailedToIgnite</span>);
+        }
+        <span class="ty">Ok</span>(<span class="kw">self</span>.transition())
+    }
+}`,
+  transitions:[
+    {t:'→ Orbit (circularização completa)',ok:true},
+    {t:'→ Abort (falha de ignição do 2° estágio)',ok:true},
+    {t:'→ MECO retroativamente',ok:false},
+  ]
+},
+{
+  id:'orb', label:'Orbit', color:'teal2', time:'T+~540 s',
+  badges:[{t:'200–400 km',c:'alt'},{t:'~7.800 m/s',c:'vel'},{t:'LEO atingida',c:'ok'},{t:'missão OK',c:'ok'}],
+  physics:`Atingir órbita não significa "ir para cima e parar". Significa atingir velocidade orbital suficiente para que a queda gravitacional contínua seja compensada pela curvatura da Terra — o foguete literalmente está em queda livre constante, mas a Terra curva para baixo enquanto ele avança horizontalmente. Para LEO (~400 km), isso requer ~7.800 m/s de velocidade horizontal. A queima de circularização (SECO — Second Engine Cutoff) termina quando apogee e perigee estão dentro dos limites nominais da missão. A partir daqui, o payload se torna o elemento ativo — deploy de satélites, operações da ISS, etc. O computador de voo entra em modo de telemetria contínua e gerenciamento de atitude orbital.`,
+  model:`Orbit é o estado terminal de sucesso. Não há transições para fora (exceto abort, que nesse ponto seria desorbitar). O estado guarda os elementos orbitais keplerianos que definem a órbita alcançada.`,
+  rust:`<span class="kw">struct</span> <span class="ty">Orbit</span> {
+    apogee_km:  <span class="ty">f64</span>,  <span class="cm">// ponto mais alto da órbita</span>
+    perigee_km: <span class="ty">f64</span>,  <span class="cm">// ponto mais baixo</span>
+    inclination_deg: <span class="ty">f64</span>,
+    period_min: <span class="ty">f64</span>,  <span class="cm">// período orbital</span>
+}
+
+<span class="kw">impl</span> <span class="ty">Rocket</span>&lt;<span class="ty">Orbit</span>&gt; {
+    <span class="cm">// estado terminal — apenas leitura</span>
+    <span class="kw">pub fn</span> telemetry(&<span class="kw">self</span>) -> <span class="ty">OrbitalElements</span> {
+        <span class="ty">OrbitalElements</span> {
+            apogee:  <span class="kw">self</span>.state.apogee_km,
+            perigee: <span class="kw">self</span>.state.perigee_km,
+        }
+    }
+    <span class="cm">// deploy do payload — consome Orbit</span>
+    <span class="kw">pub fn</span> deploy_payload(<span class="kw">self</span>) -> <span class="ty">Deployed</span> { ... }
+}`,
+  transitions:[
+    {t:'Estado terminal de sucesso',ok:true},
+    {t:'→ Deployed (payload release)',ok:true},
+  ]
+},
+{
+  id:'abt', label:'Abort', color:'red', time:'qualquer fase',
+  badges:[{t:'qualquer alt.',c:'alt'},{t:'modo seguro',c:'warn'},{t:'FTS ativo',c:'warn'},{t:'LES (tripulado)',c:'dq'}],
+  physics:`O sistema de abort é dimensionado para falhas em qualquer fase do voo. Existem dois cenários distintos: missões não tripuladas e tripuladas. Em missões não tripuladas, o abort geralmente ativa o Flight Termination System (FTS) — cargas explosivas no veículo que o destroem antes que atinja áreas habitadas. Em missões tripuladas (como Crew Dragon), o Launch Escape System (LES) ativa foguetes no topo da cápsula que a arrancam do veículo em menos de 3 segundos com aceleração de ~15g. As causas de abort automatizado incluem: desvio de trajetória acima do limite, falha de motor sem redundância suficiente, pressão de câmara fora do nominal, perda de sinal de guiamento, e violação de Keep-Out Zones.`,
+  model:`Abort é o estado terminal de falha. No typestate, ele é alcançável através do trait Abortable que é implementado para Ignition, MaxQ e MECO. Orbit raramente aborta (seria uma desorbit manobra), então pode não implementar o trait. O estado guarda o motivo e a fase de origem.`,
+  rust:`<span class="kw">struct</span> <span class="ty">Aborted</span> {
+    reason:       <span class="ty">AbortReason</span>,
+    origin_phase: <span class="ty">String</span>,
+    timestamp_ms: <span class="ty">u64</span>,
+}
+
+<span class="kw">pub trait</span> <span class="ty">Abortable</span> {
+    <span class="kw">fn</span> abort(<span class="kw">self</span>, reason: <span class="ty">AbortReason</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Aborted</span>&gt;;
+}
+
+<span class="cm">// Implementado para Ignition, MaxQ, MECO, Separation</span>
+<span class="kw">impl</span> <span class="ty">Abortable</span> <span class="kw">for</span> <span class="ty">Rocket</span>&lt;<span class="ty">Ignition</span>&gt; {
+    <span class="kw">fn</span> abort(<span class="kw">self</span>, reason: <span class="ty">AbortReason</span>) -> <span class="ty">Rocket</span>&lt;<span class="ty">Aborted</span>&gt; {
+        log::error!(<span class="str">"ABORT [{:?}] — fase Ignition"</span>, reason);
+        <span class="kw">self</span>.transition()
+    }
+}
+
+<span class="kw">enum</span> <span class="ty">AbortReason</span> {
+    EngineFailure { engine_id: <span class="ty">u8</span> },
+    StructuralOverload,
+    GuidanceFailure,
+    FuelLeak,
+    GroundCommand,
+}`,
+  transitions:[
+    {t:'Estado terminal de falha',ok:false},
+    {t:'Sem transições — fim da missão',ok:false},
+  ]
+},
+];
+
+let cur = 0;
+
+function render() {
+  const p = phases[cur];
+  document.getElementById('card').innerHTML = `
+    <div class="card-header">
+      <div>
+        <div class="phase-name">${p.label}</div>
+        <div class="phase-time">${p.time}</div>
+      </div>
+      <div class="badges">${p.badges.map(b=>`<span class="badge badge-${b.c}">${b.t}</span>`).join('')}</div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="section-label">Física e engenharia</div>
+        <p class="body-text">${p.physics}</p>
+      </div>
+      <div>
+        <div class="section-label">Modelagem em Rust</div>
+        <p class="body-text" style="margin-bottom:10px">${p.model}</p>
+        <div class="rust-block">${p.rust}</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-label">Transições válidas neste estado</div>
+    <div class="transitions">${p.transitions.map(t=>`<span class="tr-chip ${t.ok?'ok':'bad'}">${t.ok?'✓':'✗'} ${t.t}</span>`).join('')}</div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="go(-1)" ${cur===0?'disabled':''}>← Anterior</button>
+      <span class="progress">${cur+1} / ${phases.length}</span>
+      <button class="nav-btn" onclick="go(1)" ${cur===phases.length-1?'disabled':''}>Próxima →</button>
+    </div>
+  `;
+  document.querySelectorAll('.pnav').forEach((el,i)=>{
+    el.classList.toggle('active', i===cur);
+  });
+}
+
+function go(d){ cur=Math.max(0,Math.min(phases.length-1,cur+d)); render(); }
+
+const nav = document.getElementById('pnav');
+phases.forEach((p,i)=>{
+  const b = document.createElement('button');
+  b.className = `pnav ${p.color}`;
+  b.textContent = p.label;
+  b.onclick = ()=>{ cur=i; render(); };
+  nav.appendChild(b);
+});
+
+render();
+</script>

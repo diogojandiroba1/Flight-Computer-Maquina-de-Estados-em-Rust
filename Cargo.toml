@@ -1,0 +1,46 @@
+[package]
+name        = "flight-computer"
+version     = "0.1.0"
+edition     = "2021"
+authors     = ["Seu Nome <email@exemplo.com>"]
+description = "Simulador de computador de voo com máquina de estados em Rust"
+license     = "MIT"
+
+# ── Dependências de produção ──────────────────────────────────────────
+
+[dependencies]
+
+# Geração de números aleatórios (leituras simuladas de sensores)
+rand = "0.8"
+
+# Timestamps precisos de telemetria
+chrono = { version = "0.4", features = ["serde"] }
+
+# Derivação ergonômica de erros tipados
+thiserror = "1.0"
+
+# Facade de logging (macros log::info!, log::error!, etc.)
+log = "0.4"
+
+# Implementação de log que lê a variável RUST_LOG do ambiente
+env_logger = "0.10"
+
+# ── Dependências apenas para testes ──────────────────────────────────
+
+[dev-dependencies]
+
+# Macro assert_matches! para testar variantes de enum sem destruturar manualmente
+assert_matches = "1.5"
+
+# ── Perfis de compilação ──────────────────────────────────────────────
+
+[profile.dev]
+opt-level     = 0      # sem otimização — compilação rápida durante desenvolvimento
+debug         = true   # símbolos de debug habilitados
+
+[profile.release]
+opt-level     = 3      # otimização máxima
+debug         = false
+lto           = true   # link-time optimization — binário menor e mais rápido
+codegen-units = 1      # uma unidade de codegen — melhor para LTO
+panic         = "abort" # em sistemas embarcados/críticos, abort é preferível a unwind
