@@ -1,2 +1,97 @@
-[00:46:41.999] [INFO] Flight Computer iniciado. Aguardando eventos...
-[00:46:44.000] [INFO] Ignição iniciada - T+0
+[01:09:11.114] [INFO] Flight Computer online. Aguardando eventos...
+[01:09:11.114] [INFO] [Telemetry] alt=148.5m | vel=0.0m/s | thrust=0N | fuel=192168.9kg
+[01:09:11.114] [INFO] [FC] Telemetria — alt=148.5m | vel=0.0m/s
+[01:09:12.115] [INFO] [Telemetry] alt=301.5m | vel=152.8m/s | thrust=0N | fuel=192168.9kg
+[01:09:12.115] [INFO] [FC] Telemetria — alt=301.5m | vel=152.8m/s
+[01:09:13.115] [INFO] [Sequencer] T+2s — enviando comando de ignição.
+[01:09:13.115] [INFO] [FC] Ignição confirmada.
+[01:09:13.115] [INFO] Ignição iniciada - T+0
+[01:09:13.116] [INFO] [Telemetry] alt=448.5m | vel=146.9m/s | thrust=0N | fuel=192168.9kg
+[01:09:13.116] [INFO] [FC] Telemetria — alt=448.5m | vel=146.9m/s
+[01:09:13.133] [INFO] [Propulsion] Motor ativado — empuxo: 934000N | combustível: 192168.9kg
+[01:09:14.116] [INFO] [Telemetry] alt=600.2m | vel=151.6m/s | thrust=934000N | fuel=191895.2kg
+[01:09:14.116] [INFO] [FC] Telemetria — alt=600.2m | vel=151.6m/s
+[01:09:15.118] [INFO] [Telemetry] alt=751.1m | vel=150.7m/s | thrust=934000N | fuel=191621.5kg
+[01:09:15.118] [INFO] [FC] Telemetria — alt=751.1m | vel=150.7m/s
+[01:09:16.118] [INFO] [Telemetry] alt=899.9m | vel=148.8m/s | thrust=934000N | fuel=191347.9kg
+[01:09:16.118] [INFO] [FC] Telemetria — alt=899.9m | vel=148.8m/s
+[01:09:17.119] [INFO] [Telemetry] alt=1051.2m | vel=151.1m/s | thrust=934000N | fuel=191074.2kg
+[01:09:17.119] [INFO] [FC] Telemetria — alt=1051.2m | vel=151.1m/s
+[01:09:17.119] [INFO] [FC] Transição: Ignition → MaxQ
+[01:09:17.119] [INFO] Inicio da Ascensão atmosférica
+[01:09:18.120] [INFO] [Telemetry] alt=1199.3m | vel=147.9m/s | thrust=934000N | fuel=190800.5kg
+[01:09:18.120] [INFO] [FC] Telemetria — alt=1199.3m | vel=147.9m/s
+[01:09:19.121] [INFO] [Telemetry] alt=1350.6m | vel=151.2m/s | thrust=934000N | fuel=190526.8kg
+[01:09:19.121] [INFO] [FC] Telemetria — alt=1350.6m | vel=151.2m/s
+[01:09:20.122] [INFO] [Telemetry] alt=1500.5m | vel=149.8m/s | thrust=934000N | fuel=190253.1kg
+[01:09:20.122] [INFO] [FC] Telemetria — alt=1500.5m | vel=149.8m/s
+[01:09:21.123] [INFO] [Telemetry] alt=1650.6m | vel=150.0m/s | thrust=934000N | fuel=189979.4kg
+[01:09:21.123] [INFO] [FC] Telemetria — alt=1650.6m | vel=150.0m/s
+[01:09:22.124] [INFO] [Telemetry] alt=1801.7m | vel=151.0m/s | thrust=934000N | fuel=189705.8kg
+[01:09:22.124] [INFO] [FC] Telemetria — alt=1801.7m | vel=151.0m/s
+[01:09:23.124] [INFO] [Telemetry] alt=1948.0m | vel=146.2m/s | thrust=934000N | fuel=189432.1kg
+[01:09:23.125] [INFO] [FC] Telemetria — alt=1948.0m | vel=146.2m/s
+[01:09:24.125] [INFO] [Telemetry] alt=2097.9m | vel=149.8m/s | thrust=934000N | fuel=189158.4kg
+[01:09:24.125] [INFO] [FC] Telemetria — alt=2097.9m | vel=149.8m/s
+[01:09:25.126] [INFO] [Telemetry] alt=2248.3m | vel=150.2m/s | thrust=934000N | fuel=188884.7kg
+[01:09:25.126] [INFO] [FC] Telemetria — alt=2248.3m | vel=150.2m/s
+[01:09:26.127] [INFO] [Telemetry] alt=2398.4m | vel=150.0m/s | thrust=934000N | fuel=188638.4kg
+[01:09:26.127] [INFO] [FC] Telemetria — alt=2398.4m | vel=150.0m/s
+[01:09:27.127] [INFO] [Telemetry] alt=2548.5m | vel=150.0m/s | thrust=934000N | fuel=188364.7kg
+[01:09:27.127] [INFO] [FC] Telemetria — alt=2548.5m | vel=150.0m/s
+[01:09:28.128] [INFO] [Telemetry] alt=2702.0m | vel=153.3m/s | thrust=934000N | fuel=188091.0kg
+[01:09:28.128] [INFO] [FC] Telemetria — alt=2702.0m | vel=153.3m/s
+[01:09:29.128] [INFO] [Telemetry] alt=2851.2m | vel=149.2m/s | thrust=934000N | fuel=187817.3kg
+[01:09:29.128] [INFO] [FC] Telemetria — alt=2851.2m | vel=149.2m/s
+[01:09:30.129] [INFO] [Telemetry] alt=3001.4m | vel=150.1m/s | thrust=934000N | fuel=187543.7kg
+[01:09:30.129] [INFO] [FC] Telemetria — alt=3001.4m | vel=150.1m/s
+[01:09:30.129] [INFO] [FC] Transição: MaxQ → MECO
+[01:09:30.129] [INFO] Final da Ascensão atmosférica
+[01:09:30.209] [INFO] [Propulsion] Motor desligado (MECO).
+[01:09:31.130] [INFO] [Telemetry] alt=3151.9m | vel=150.3m/s | thrust=0N | fuel=187543.7kg
+[01:09:31.130] [INFO] [FC] Telemetria — alt=3151.9m | vel=150.3m/s
+[01:09:32.131] [INFO] [Telemetry] alt=3299.7m | vel=147.7m/s | thrust=0N | fuel=187543.7kg
+[01:09:32.131] [INFO] [FC] Telemetria — alt=3299.7m | vel=147.7m/s
+[01:09:33.132] [INFO] [Telemetry] alt=3451.5m | vel=151.6m/s | thrust=0N | fuel=187543.7kg
+[01:09:33.132] [INFO] [FC] Telemetria — alt=3451.5m | vel=151.6m/s
+[01:09:34.133] [INFO] [Telemetry] alt=3600.4m | vel=148.8m/s | thrust=0N | fuel=187543.7kg
+[01:09:34.133] [INFO] [FC] Telemetria — alt=3600.4m | vel=148.8m/s
+[01:09:35.134] [INFO] [Telemetry] alt=3751.7m | vel=151.2m/s | thrust=0N | fuel=187543.7kg
+[01:09:35.134] [INFO] [FC] Telemetria — alt=3751.7m | vel=151.2m/s
+[01:09:36.134] [INFO] [Telemetry] alt=3901.5m | vel=149.8m/s | thrust=0N | fuel=187543.7kg
+[01:09:36.134] [INFO] [FC] Telemetria — alt=3901.5m | vel=149.8m/s
+[01:09:37.135] [INFO] [Telemetry] alt=4049.4m | vel=147.7m/s | thrust=0N | fuel=187543.7kg
+[01:09:37.135] [INFO] [FC] Telemetria — alt=4049.4m | vel=147.7m/s
+[01:09:38.135] [INFO] [Telemetry] alt=4198.7m | vel=149.3m/s | thrust=0N | fuel=187543.7kg
+[01:09:38.135] [INFO] [FC] Telemetria — alt=4198.7m | vel=149.3m/s
+[01:09:39.137] [INFO] [Telemetry] alt=4351.9m | vel=153.0m/s | thrust=0N | fuel=187543.7kg
+[01:09:39.137] [INFO] [FC] Telemetria — alt=4351.9m | vel=153.0m/s
+[01:09:40.137] [INFO] [Telemetry] alt=4498.7m | vel=146.8m/s | thrust=0N | fuel=187543.7kg
+[01:09:40.137] [INFO] [FC] Telemetria — alt=4498.7m | vel=146.8m/s
+[01:09:41.138] [INFO] [Telemetry] alt=4651.2m | vel=152.4m/s | thrust=0N | fuel=187543.7kg
+[01:09:41.138] [INFO] [FC] Telemetria — alt=4651.2m | vel=152.4m/s
+[01:09:42.139] [INFO] [Telemetry] alt=4799.6m | vel=148.3m/s | thrust=0N | fuel=187543.7kg
+[01:09:42.139] [INFO] [FC] Telemetria — alt=4799.6m | vel=148.3m/s
+[01:09:43.140] [INFO] [Telemetry] alt=4951.8m | vel=152.0m/s | thrust=0N | fuel=187543.7kg
+[01:09:43.140] [INFO] [FC] Telemetria — alt=4951.8m | vel=152.0m/s
+[01:09:44.140] [INFO] [Telemetry] alt=5098.6m | vel=146.8m/s | thrust=0N | fuel=187543.7kg
+[01:09:44.140] [INFO] [FC] Telemetria — alt=5098.6m | vel=146.8m/s
+[01:09:44.140] [INFO] [FC] Transição: MECO → Separation
+[01:09:44.140] [INFO] Separação de estágio
+[01:09:45.141] [INFO] [Telemetry] alt=5248.6m | vel=149.9m/s | thrust=0N | fuel=187543.7kg
+[01:09:45.141] [INFO] [FC] Telemetria — alt=5248.6m | vel=149.9m/s
+[01:09:46.142] [INFO] [Telemetry] alt=5398.1m | vel=149.3m/s | thrust=0N | fuel=187543.7kg
+[01:09:46.142] [INFO] [FC] Telemetria — alt=5398.1m | vel=149.3m/s
+[01:09:47.142] [INFO] [Telemetry] alt=5549.4m | vel=151.2m/s | thrust=0N | fuel=187543.7kg
+[01:09:47.142] [INFO] [FC] Telemetria — alt=5549.4m | vel=151.2m/s
+[01:09:48.144] [INFO] [Telemetry] alt=5697.7m | vel=148.2m/s | thrust=0N | fuel=187543.7kg
+[01:09:48.144] [INFO] [FC] Telemetria — alt=5697.7m | vel=148.2m/s
+[01:09:49.144] [INFO] [Telemetry] alt=5847.9m | vel=150.1m/s | thrust=0N | fuel=187543.7kg
+[01:09:49.144] [INFO] [FC] Telemetria — alt=5847.9m | vel=150.1m/s
+[01:09:50.145] [INFO] [Telemetry] alt=6002.3m | vel=154.3m/s | thrust=0N | fuel=187543.7kg
+[01:09:50.145] [INFO] [FC] Telemetria — alt=6002.3m | vel=154.3m/s
+[01:09:50.145] [INFO] [FC] Transição: Separation → Orbit
+[01:09:50.145] [INFO] Inserção em orbita
+[01:09:50.145] [INFO] [FC] Estado terminal atingido. Encerrando event loop.
+[01:09:50.145] [INFO] [FC] Flight Computer encerrado.
+[01:09:50.145] [INFO] [Navigation] Canal de dados encerrado. Thread finalizando.

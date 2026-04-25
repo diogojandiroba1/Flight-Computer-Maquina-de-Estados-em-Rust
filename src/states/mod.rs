@@ -5,7 +5,7 @@ pub mod meco;
 pub mod max_q;
 pub mod orbit;
 pub mod separation;
-
+pub mod abort;
 //(Zero-Sized Types)
 pub struct PreLaunch;
 pub struct Ignition;
