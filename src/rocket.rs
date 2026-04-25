@@ -29,3 +29,14 @@ impl<State>Rocket<State>{
 pub trait Abortable {
     fn abort(self) -> Rocket<Aborted>;
 }
+
+
+pub enum RocketState {
+    PreLaunch(Rocket<PreLaunch>),
+    Ignition(Rocket<Ignition>),
+    MaxQ(Rocket<MaxQ>),
+    MECO(Rocket<MECO>),
+    Separation(Rocket<Separation>),
+    Orbit(Rocket<Orbit>),
+    Aborted(Rocket<Aborted>),
+}
